@@ -30,7 +30,7 @@ const HomePage = ({ app_settings }) => {
 
 
     return (
-        <div className={`w-screen h-screen bg-gradient-to-b from-emerald-400 via-teal-200 to-emerald-50 to-80% px-[15px] relative`} >
+        <div className={`w-screen min-h-screen bg-gradient-to-b from-emerald-400 via-teal-200 to-emerald-50 to-80% px-[15px] relative`} >
 
             <Navbar app_settings={app_settings} />
 
@@ -75,7 +75,7 @@ const HomePage = ({ app_settings }) => {
                             <div className='w-[40px] h-[40px] grid place-items-center rounded-full  bg-gradient-to-b from-orange-200  to-orange-400'>
                                 <Image src={rupee_bag} alt="Rupee Icon" className='text-white w-[30px]' />
                             </div>
-                            <p onClick={() => handle_options("/borrow")} className='w-[57px] text-[12px] font-medium text-stone-800 text-center select-none break-words' >Refinance</p>
+                            <p onClick={() => handle_options("/borrow")} className='w-[60px] text-[12px] font-medium text-stone-800 text-center select-none break-words' >Refinance</p>
                         </div>
 
                         <div onClick={() => handle_options("/borrow-history")} className='px-[10px] py-[25px] bg-teal-100 rounded-lg flex items-center  w-full gap-2 active:opacity-60 transition-all cursor-pointer select-none' >

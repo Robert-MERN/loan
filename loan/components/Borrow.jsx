@@ -124,7 +124,7 @@ const Borrow = ({ app_settings }) => {
 
 
     return (
-        <div className='w-screen h-screen relative bg-stone-100 pt-[52px]' >
+        <div className='w-screen min-h-screen relative bg-stone-100 pt-[52px]' >
             <Navbar app_settings={app_settings} back_btn={true} />
 
             <div className="h-[35px] bg-orange-100 px-[15px] flex items-center select-none">
