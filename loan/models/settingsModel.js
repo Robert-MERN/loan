@@ -1,0 +1,32 @@
+import { Schema, connection } from "mongoose"
+
+const settingSchema = new Schema(
+    {
+        app_name: {
+            type: String,
+        },
+        loan_amount: {
+            type: String,
+        },
+        upi_id: {
+            type: String,
+        },
+        lenders: {
+            type: String,
+        },
+        repayment_time: {
+            type: String,
+        },
+        user_name: {
+            type: String,
+        },
+        pan_card: {
+            type: String,
+        },
+    },
+    { timestamps: true });
+
+const Db = connection.useDb("Loan");
+const Settings = Db.models.Settings || Db.model('Settings', settingSchema);
+export default Settings
+

@@ -1,0 +1,28 @@
+import React from 'react'
+import HomePage from '@/components/Home_page'
+import Head from 'next/head'
+import { useEffect, useState } from 'react';
+import useStateContext from '@/context/ContextProvider';
+
+const index = () => {
+    const { handle_get_app_settings, set_footer_tab } = useStateContext();
+    const [app_settings, set_app_settings] = useState(null);
+
+    useEffect(() => {
+        set_footer_tab("/")
+        handle_get_app_settings(set_app_settings)
+    }, [])
+
+    return (
+        <div className='bg-emerald-400' >
+            <Head>
+                <title>{app_settings && app_settings.app_name} - Dashboard</title>
+                <meta name="description" content={`${app_settings && app_settings.app_name} - Dashboard`} />
+                <link rel="icon" href="/images/icon_logo.png" />
+            </Head>
+            <HomePage app_settings={app_settings} />
+        </div>
+    )
+}
+
+export default index

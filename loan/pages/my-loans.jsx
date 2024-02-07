@@ -1,0 +1,35 @@
+import React from 'react'
+import Head from 'next/head'
+import My_loans from '@/components/My_loans'
+import { useEffect, useState } from 'react';
+import useStateContext from '@/context/ContextProvider';
+
+const my_loan = () => {
+    const { handle_get_app_settings, set_footer_tab } = useStateContext();
+    const [app_settings, set_app_settings] = useState(null);
+
+    useEffect(() => {
+        set_footer_tab("/my-loans")
+        handle_get_app_settings(set_app_settings)
+    }, [])
+    return (
+        <div>
+            <Head>
+                <title>{app_settings && app_settings.app_name} - My Loans</title>
+                <meta name="description" content={`${app_settings && app_settings.app_name} - My Loans`} />
+                <link rel="icon" href="/images/icon_logo.png" />
+            </Head>
+            <My_loans app_settings={app_settings} />
+        </div>
+    )
+}
+
+export default my_loan
+
+
+
+
+
+
+
+
