@@ -16,8 +16,8 @@ const index = () => {
     return (
         <div className='bg-emerald-400' >
             <Head>
-                <title>{app_settings && app_settings.app_name} - Dashboard</title>
-                <meta name="description" content={`${app_settings && app_settings.app_name} - Dashboard`} />
+                <title>Home - {app_settings && app_settings.app_name}</title>
+                <meta name="description" content={`${app_settings && app_settings.app_name} - `} />
                 <link rel="icon" href="/images/icon_logo.png" />
             </Head>
             <HomePage app_settings={app_settings} />
