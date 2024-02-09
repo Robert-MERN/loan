@@ -25,7 +25,7 @@ const Navbar = ({ back_btn, disable_headset, admin, app_settings }) => {
 
   return (
     <div className='fixed left-0 top-0 right-0 bg-emerald-400 z-50' >
-      <div className={`p-[15px] w-screen`} >
+      <div className={`p-[15px] w-screen h-[52px]`} >
         <nav className='w-full flex justify-center items-center relative' >
           {back_btn &&
             <ArrowBackIosNewIcon onClick={() => push()} className='text-white absolute left-0 top-0 active:opacity-60 transition-all cursor-pointer' />

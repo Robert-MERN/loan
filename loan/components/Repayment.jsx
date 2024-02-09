@@ -123,7 +123,7 @@ const Repayment = ({ app_settings }) => {
                 </div>
                 {/* Paytm */}
                 <div className='h-[55px] border-b border-zinc-100 flex items-center gap-[70px]' >
-                    <button onClick={() => set_select("paytm")} className={`border-blue-500 ${select === "paytm" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
+                    <button  type="button"  onClick={() => set_select("paytm")} className={`border-blue-500 ${select === "paytm" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
                         {select === "paytm" ?
                             <FaCheck />
                             :
@@ -136,7 +136,7 @@ const Repayment = ({ app_settings }) => {
                 </div>
                 {/* G-pay */}
                 <div className='h-[55px] border-b border-zinc-100 flex items-center gap-16' >
-                    <button onClick={() => set_select("gpay")} className={`border-blue-500 ${select === "gpay" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
+                    <button  type="button"  onClick={() => set_select("gpay")} className={`border-blue-500 ${select === "gpay" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
                         {select === "gpay" ?
                             <FaCheck />
                             :
@@ -148,7 +148,7 @@ const Repayment = ({ app_settings }) => {
 
                 </div>
                 {/* UPI */}
-                <div className='h-[55px] border-b border-zinc-100 flex items-center gap-16' >
+                <div type="button" className='h-[55px] border-b border-zinc-100 flex items-center gap-16' >
                     <button onClick={() => set_select("upi")} className={`border-blue-500 ${select === "upi" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
                         {select === "upi" ?
                             <FaCheck />
