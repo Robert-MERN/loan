@@ -32,7 +32,7 @@ const My_loans = ({ app_settings }) => {
 
 
     return (
-        <div className='w-screen min-h-screen relative bg-stone-100' >
+        <div className={`w-screen min-h-screen relative bg-stone-10 ${styles.scrollBar}`} >
             <Navbar app_settings={app_settings} back_btn={false} />
             <div className='w-screen overflow-x-auto flex bg-emerald-400 mt-[52px] px-[15px] pb-[5px] h-[34px] gap-8' >
                 <p onClick={() => handle_select("paid_off")} className={`text-stone-50 text-[13px] select-none relative w-[70px] text-center whitespace-nowrap ${select === "paid_off" ? "font-semibold " : "font-normal opacity-90"}`} >
@@ -92,16 +92,16 @@ const My_loans = ({ app_settings }) => {
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Lenders</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings && app_settings.lenders}</p>
+                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.lenders : ""}</p>
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Loan Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings && app_settings.loan_amount}.00</p>
+                            ₹ {app_settings ? app_settings.loan_amount + ".00" : "00.00"}</p>
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Repayment Time</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings && app_settings.repayment_time}</p>
+                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
                     </div>
                     <div className='w-full flex justify-end items-center mt-3' >
                         <button onClick={() => router.push("/re-payment-tab")} className='bg-emerald-400 text-[12px] text-white px-[10px] py-[8px] rounded-lg font-medium active:opacity-60 transition-all' >Repayment Now</button>

@@ -1,23 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Navbar from './utilities/Navbar'
 import styles from "@/styles/Home.module.css";
-import useStateContext from '@/context/ContextProvider';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const Repayment_tab = ({ app_settings }) => {
-    const { setAPIloading, openModal } = useStateContext();
-
-    const [select, set_select] = useState("not_finished");
-    const handle_select = (option) => {
-        setAPIloading(true)
-        setTimeout(() => {
-            set_select(option);
-            setAPIloading(false);
-        }, 500);
-    }
-
-    const router = useRouter();
 
     const calc_admin_amount = (amount) => {
         const first = amount.split(",")[0];
@@ -33,8 +19,8 @@ const Repayment_tab = ({ app_settings }) => {
         <div className='w-screen min-h-screen relative bg-stone-100' >
             <Navbar app_settings={app_settings} back_btn={true} disable_headset={true} />
 
-            <div className="h-[35px] bg-orange-100 px-[15px] flex items-center mt-[52px]">
-                <p className={`text-amber-600 text-[12px] whitespace-nowrap bg-orange-100 ${styles.text_slider}`}>
+            <div className="h-[35px] bg-orange-200 px-[15px] flex items-center mt-[52px]">
+                <p className={`text-amber-700 text-[12px] whitespace-nowrap ${styles.text_slider}`}>
                     We will not contact the user in any way to ask for repayment. Please complete the repayment operation within the APP and beware of phishing attempts or fraudulent communication from unauthorized sources.
                 </p>
             </div>
@@ -48,9 +34,9 @@ const Repayment_tab = ({ app_settings }) => {
 
                             <p className='text-stone-400 font-semibold text-[14px]' >Repay Amount </p>
 
-                            <p className='text-stone-800 font-bold text-[19px]' >{`₹ ${app_settings && app_settings.loan_amount}.00`}</p>
+                            <p className='text-stone-800 font-bold text-[19px]' >{`₹ ${app_settings ? app_settings.loan_amount + ".00" : "00.00"}`}</p>
 
-                            <p className='text-stone-400 font-semibold text-[12px]' >Payment dates: {app_settings && app_settings.repayment_time}</p>
+                            <p className='text-stone-400 font-semibold text-[12px]' >Payment dates: {app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
 
                             <button className='px-[10px] py-[6px] font-medium text-emerald-400 bg-stone-100 rounded-md text-[14px]' >
                                 Incomplete
@@ -62,7 +48,7 @@ const Repayment_tab = ({ app_settings }) => {
 
 
                 <p className={`text-stone-800 font-semibold text-[11px] px-[15px] mt-[90px] mb-4`}>
-                    You can borrow <span className='text-emerald-400' >{`₹ ${app_settings && app_settings.loan_amount}.00`}</span> next time after repayment on time
+                    You can borrow <span className='text-emerald-400' >{`₹ ${app_settings ? app_settings.loan_amount + ".00" : "00.00"}`}</span> next time after repayment on time
                 </p>
 
                 <div className='w-full px-[15px] bg-white mt-4 shadow flex flex-col gap-4 py-4' >
@@ -72,7 +58,7 @@ const Repayment_tab = ({ app_settings }) => {
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Lending Institutions</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings && app_settings.lenders}</p>
+                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.lenders : ""}</p>
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Loan Term</p>
@@ -82,18 +68,18 @@ const Repayment_tab = ({ app_settings }) => {
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Application Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings && app_settings.loan_amount}.00</p>
+                            ₹ {app_settings ? app_settings.loan_amount + ".00" : "00.00"}</p>
                     </div>
 
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Admin Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings && calc_admin_amount(app_settings.loan_amount)}.00</p>
+                            ₹ {app_settings ? calc_admin_amount(app_settings.loan_amount) + ".00" : "00.00"}</p>
                     </div>
 
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Expire Date</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings && app_settings.repayment_time}</p>
+                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
                     </div>
                     <div className='w-full mt-3' >
                         <Link href="/re-payment" target='__blank' >

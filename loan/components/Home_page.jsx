@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
 import useStateContext from '@/context/ContextProvider';
-import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 import rupee_bag from "@/public/images/rupee-bag.png";
 import Image from 'next/image';
-import { LuHome } from "react-icons/lu";
-import { CgNotes } from "react-icons/cg";
-import { PiUserListBold } from "react-icons/pi";
 import rupee_pocket from "@/public/images/rupee-pocket.png"
 import Footer from './utilities/Footer';
 import Navbar from './utilities/Navbar';
 import { useRouter } from 'next/router';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import styles from "@/styles/Home.module.css";
 
 const HomePage = ({ app_settings }) => {
 
-    const { setAPIloading } = useStateContext();
+    const { setAPIloading, openModal, borrow_amount } = useStateContext();
 
     const router = useRouter();
 
@@ -30,19 +28,20 @@ const HomePage = ({ app_settings }) => {
 
 
     return (
-        <div className={`w-screen min-h-screen bg-gradient-to-b from-emerald-400 via-teal-200 to-emerald-50 to-80% px-[15px] relative`} >
+        <div className={`w-screen min-h-screen bg-gradient-to-b from-emerald-400 via-teal-200 to-emerald-50 to-80% px-[15px] relative ${styles.scrollBar}`} >
 
             <Navbar app_settings={app_settings} />
 
 
 
-            <div className='mt-[52px]'>
+            <div className={`mt-[52px] ${styles.scrollBar}`}>
                 <div className='w-full flex flex-col items-center' >
-                    <p className='font-semuibold text-[18px] text-white text-center select-none' >
+                    <p className='font-semuibold text-[18px] text-white text-center select-none flex items-center' >
                         Available credit
                     </p>
-                    <p className='font-bold text-[32px] text-white text-center mt-2 select-none' >
-                        ₹ 55,000.00
+                    <p onClick={() => openModal("borrow_amount_modal")} className='font-bold text-[32px] text-white text-center mt-2 select-none active:opacity-40 transition-all cursor-pointer' >
+                        ₹ {borrow_amount}
+                        <ArrowDropDownIcon className='scale-[1.8] ml-2' />
                     </p>
                 </div>
 
@@ -50,7 +49,7 @@ const HomePage = ({ app_settings }) => {
                     <div className='flex-1 flex flex-col items-center border-r border-stone-100 gap-2 select-none' >
 
                         <p className='font-semibold text-[15px] text-white' >Total amount</p>
-                        <p className='font-bold text-[18px] text-white' >₹ 55, 000.00</p>
+                        <p className='font-bold text-[18px] text-white' >₹ {borrow_amount}</p>
 
                     </div>
                     <div className='flex-1 flex flex-col items-center gap-2 select-none' >

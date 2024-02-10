@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Navbar from './utilities/Navbar'
 import useStateContext from '@/context/ContextProvider';
-import Footer from './utilities/Footer';
+import styles from "@/styles/Home.module.css";
 
 
 const Borrow_history = ({ app_settings }) => {
@@ -18,7 +18,7 @@ const Borrow_history = ({ app_settings }) => {
     }
 
     return (
-        <div className='w-screen min-h-screen relative bg-stone-100' >
+        <div className={`w-screen min-h-screen relative bg-stone-100 ${styles.scrollBar}`} >
             <Navbar app_settings={app_settings} back_btn={true} />
             <div className='w-screen overflow-x-auto flex bg-emerald-400 mt-[52px] px-[15px] pb-[5px] h-[34px] justify-between gap-8' >
                 <p onClick={() => handle_select("all")} className={`text-stone-50 text-[13px] select-none relative w-[70px] text-center whitespace-nowrap ${select === "all" ? "font-semibold " : "font-normal opacity-90"}`} >

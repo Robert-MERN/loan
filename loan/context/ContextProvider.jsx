@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react'
 import axios from "axios";
-import { useRouter } from 'next/router';
 
 
 const StateContext = createContext();
@@ -29,7 +28,7 @@ export const ContextProvider = ({ children }) => {
 
 
 
-    const [borrow_amount, set_borrow_amount] = useState("5,000.00");
+    const [borrow_amount, set_borrow_amount] = useState("15,000.00");
     const [footer_tab, set_footer_tab] = useState("/");
 
 

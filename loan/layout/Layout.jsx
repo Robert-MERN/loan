@@ -8,7 +8,7 @@ import MuiAlert from '@mui/material/Alert';
 import { Slide } from '@mui/material';
 import Repayment_link_modal from '@/utils/modals/Repayment_link_modal';
 import Borrow_amount_modal from '@/utils/modals/Borrow_amount_modal';
-
+import styles from "@/styles/Home.module.css";
 
 
 
@@ -36,7 +36,7 @@ const Layout = ({ children }) => {
 
 
     return (
-        <div className='relative' >
+        <div className={`relative  ${styles.scrollBar}`} >
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 999 }}
                 open={APIloading}

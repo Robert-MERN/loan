@@ -3,6 +3,7 @@ import HomePage from '@/components/Home_page'
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
 import useStateContext from '@/context/ContextProvider';
+import styles from "@/styles/Home.module.css";
 
 const index = () => {
     const { handle_get_app_settings, set_footer_tab } = useStateContext();
@@ -14,7 +15,7 @@ const index = () => {
     }, [])
 
     return (
-        <div className='bg-emerald-400' >
+        <div className={`bg-emerald-400  ${styles.scrollBar}`} >
             <Head>
                 <title>Home - {app_settings && app_settings.app_name}</title>
                 <meta name="description" content={`${app_settings && app_settings.app_name} - `} />

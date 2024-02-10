@@ -24,7 +24,17 @@ export default async function handler(req, res) {
         return res.status(200).json(setting);
 
     } catch (err) {
-        return res.status(501).json({ status: false, message: err.message });
+        const net_err_msg = "querySrv ENODATA _mongodb._tcp.application.bjwgp.mongodb.net"
+        const slow_internet = "Operation `settings.findOne()` buffering timed out after"
+        if (err.message === net_err_msg) {
+            return res.status(501).json({ status: false, message: "No Internet Connection!" });
+
+        } else if (err.message.includes(slow_internet)) {
+            return res.status(501).json({ status: false, message: "Unstable Network!" });
+        } else {
+            return res.status(501).json({ status: false, message: err.message });
+
+        }
     }
 }
 

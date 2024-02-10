@@ -4,11 +4,12 @@ import NextProgress from "nextjs-progressbar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '@/layout/Layout';
+import styles from "@/styles/Home.module.css";
 
 
 export default function App({ Component, pageProps }) {
   return (
-    <>
+    <div className={`${styles.scrollBar}`} >
       <NextProgress
         startPosition={0.1}
         stopDelayMs={100}
@@ -35,6 +36,6 @@ export default function App({ Component, pageProps }) {
 
         />
       </ContextProvider>
-    </>
+    </div>
   )
 }
