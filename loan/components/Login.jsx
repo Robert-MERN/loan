@@ -65,7 +65,7 @@ const Login = ({ app_settings }) => {
                             <p className='text-[12px] text-stone-400 font-normal' >Phone number (e.g. xxxxxxxxxx)</p>
                         </div>
                         :
-                        <div className='flex items-center justify-center gap-3 bg-emerald-100 rounded-xl px-[10px] py-[25px] text-[15px] font-normal text-zinc-400 mb-2' >
+                        <div className='flex items-center justify-center gap-3 bg-emerald-100 rounded-xl px-[10px] py-[25px] text-[15px] font-normal text-zinc-400 mb-2 select-none' >
                             Your login information is saved
 
                             <div className='bg-white p-[5px] rounded-md text-emerald-400' >
