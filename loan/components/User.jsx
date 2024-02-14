@@ -41,11 +41,10 @@ const User = ({ app_settings }) => {
         setAPIloading(true);
         setTimeout(() => {
             if (link === "logout") {
-
+                setAPIloading(false);
             } else {
                 router.push(link)
             }
-            setAPIloading(false);
         }, 500)
 
     }

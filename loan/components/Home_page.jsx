@@ -19,7 +19,6 @@ const HomePage = ({ app_settings }) => {
         setAPIloading(true);
         setTimeout(() => {
             link && router.push(link)
-            setAPIloading(false);
         }, 1000)
 
     }

@@ -18,7 +18,6 @@ const Navbar = ({ back_btn, disable_headset, admin, app_settings }) => {
       } else {
         router.back();
       }
-      setAPIloading(false);
     }, 500);
   }
 

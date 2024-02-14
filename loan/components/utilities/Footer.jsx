@@ -17,7 +17,6 @@ const Footer = () => {
     setTimeout(() => {
       router.push(val);
       set_footer_tab(val);
-      setAPIloading(false);
     }, 600)
   }
 

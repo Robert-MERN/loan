@@ -12,7 +12,7 @@ const my_loan = () => {
     useEffect(() => {
         set_footer_tab("/my-loans")
         handle_get_app_settings(set_app_settings)
-    }, [])
+    }, []);
     return (
         <div className={`${styles.scrollBar}`} >
             <Head>
