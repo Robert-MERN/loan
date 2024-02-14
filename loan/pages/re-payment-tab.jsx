@@ -3,10 +3,7 @@ import styles from '@/styles/Home.module.css'
 import Repayment_tab from "@/components/Repayment_tab";
 import { useEffect, useState } from 'react';
 import useStateContext from '@/context/ContextProvider';
-
-
-
-
+import { getCookie } from 'cookies-next';
 
 
 
@@ -30,6 +27,20 @@ export default function repayment_tab() {
             <Repayment_tab app_settings={app_settings} />
         </div>
     )
+}
+
+
+export const getServerSideProps = async function ({ req, res }) {
+    const user = getCookie("user_account", { req, res });
+    if (!user) {
+        return {
+            redirect: {
+                destination: '/login?redirect_url=' + req.url,
+                permanent: true,
+            },
+        }
+    }
+    return { props: { message: "logged in!" } }
 }
 
 

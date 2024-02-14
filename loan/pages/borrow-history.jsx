@@ -4,6 +4,7 @@ import Borrow_history from '@/components/Borrow_history'
 import { useEffect, useState } from 'react';
 import useStateContext from '@/context/ContextProvider';
 import styles from "@/styles/Home.module.css";
+import { getCookie } from 'cookies-next';
 
 const borrow = () => {
     const { handle_get_app_settings } = useStateContext();
@@ -27,6 +28,19 @@ const borrow = () => {
 
 export default borrow
 
+
+export const getServerSideProps = async function ({ req, res }) {
+    const user = getCookie("user_account", { req, res });
+    if (!user) {
+        return {
+            redirect: {
+                destination: '/login?redirect_url=' + req.url,
+                permanent: true,
+            },
+        }
+    }
+    return { props: { message: "logged in!" } }
+}
 
 
 

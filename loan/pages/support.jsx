@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Support from '@/components/Support'
 import { useEffect, useState } from 'react';
 import useStateContext from '@/context/ContextProvider';
+import { getCookie } from 'cookies-next';
 
 const support = () => {
     const { handle_get_app_settings } = useStateContext();
@@ -24,6 +25,20 @@ const support = () => {
 }
 
 export default support
+
+
+export const getServerSideProps = async function ({ req, res }) {
+    const user = getCookie("user_account", { req, res });
+    if (!user) {
+        return {
+            redirect: {
+                destination: '/login?redirect_url=' + req.url,
+                permanent: true,
+            },
+        }
+    }
+    return { props: { message: "logged in!" } }
+}
 
 
 

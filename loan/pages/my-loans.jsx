@@ -4,6 +4,7 @@ import My_loans from '@/components/My_loans'
 import { useEffect, useState } from 'react';
 import useStateContext from '@/context/ContextProvider';
 import styles from "@/styles/Home.module.css";
+import { getCookie } from 'cookies-next';
 
 const my_loan = () => {
     const { handle_get_app_settings, set_footer_tab } = useStateContext();
@@ -26,6 +27,19 @@ const my_loan = () => {
 }
 
 export default my_loan
+
+export const getServerSideProps = async function ({ req, res }) {
+    const user = getCookie("user_account", { req, res });
+    if (!user) {
+        return {
+            redirect: {
+                destination: '/login?redirect_url=' + req.url,
+                permanent: true,
+            },
+        }
+    }
+    return { props: { message: "logged in!" } }
+}
 
 
 

@@ -8,6 +8,7 @@ import { Slide } from '@mui/material';
 import Repayment_link_modal from '@/utils/modals/Repayment_link_modal';
 import Borrow_amount_modal from '@/utils/modals/Borrow_amount_modal';
 import styles from "@/styles/Home.module.css";
+import Logout_modal from '@/utils/modals/Logout_modal';
 
 
 
@@ -24,7 +25,7 @@ function TransitionDown(props) {
 
 const Layout = ({ children }) => {
 
-    const { modals, closeModal, APIloading, cookieUser, snackbar_alert, set_snackbar_alert, } = useStateContext();
+    const { modals, closeModal, APIloading, snackbar_alert, set_snackbar_alert, } = useStateContext();
 
     const handleClose = () => {
         set_snackbar_alert(prev => ({ ...prev, open: false }));
@@ -47,6 +48,8 @@ const Layout = ({ children }) => {
             <Repayment_link_modal open={modals} close={() => closeModal("repayment_link_modal")} />
 
             <Borrow_amount_modal open={modals} close={() => closeModal("borrow_amount_modal")} />
+
+            <Logout_modal open={modals} close={() => closeModal("logout_modal")} />
 
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}

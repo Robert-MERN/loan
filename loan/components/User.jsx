@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 
 
 const User = ({ app_settings }) => {
-    const { setAPIloading } = useStateContext();
+    const { setAPIloading, openModal } = useStateContext();
 
 
     const options = [
@@ -41,6 +41,7 @@ const User = ({ app_settings }) => {
         setAPIloading(true);
         setTimeout(() => {
             if (link === "logout") {
+                openModal("logout_modal")
                 setAPIloading(false);
             } else {
                 router.push(link)

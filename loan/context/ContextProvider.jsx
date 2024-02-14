@@ -11,6 +11,7 @@ export const ContextProvider = ({ children }) => {
     const defaultModals = {
         repayment_link_modal: false,
         borrow_amount_modal: false,
+        logout_modal: false,
     };
     const [modals, setModals] = useState(defaultModals);
     const openModal = (key) => {
