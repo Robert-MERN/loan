@@ -5,9 +5,9 @@ import { useState } from 'react'
 
 
 
-const Admin = ({ app_settings }) => {
+const Admin = ({ app_settings, device_info }) => {
 
-    const { handle_update_app_settings } = useStateContext()
+    const { handle_update_app_settings, handle_user_device_info } = useStateContext()
 
     const default_State = {
         app_name: "",
@@ -17,6 +17,7 @@ const Admin = ({ app_settings }) => {
         repayment_time: "",
         user_name: "",
         pan_card: "",
+        phone_number: "",
         code: "",
     }
 
@@ -45,7 +46,8 @@ const Admin = ({ app_settings }) => {
         e.preventDefault()
         const { code, ...rest } = values;
         const settings = delete_empty_pairs(rest);
-        handle_update_app_settings(settings, code, set_default_states);
+
+        handle_update_app_settings(settings, code, set_default_states, device_info, handle_user_device_info);
     }
 
     return (
@@ -56,7 +58,7 @@ const Admin = ({ app_settings }) => {
                 <div className='w-full flex flex-col gap-1' >
                     <label className='text-[13px] font-bold text-stone-700' htmlFor="">App Name</label>
                     < input
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         placeholder='Name'
                         type="text"
                         name="app_name"
@@ -70,7 +72,7 @@ const Admin = ({ app_settings }) => {
                     < input
                         placeholder='00.00'
                         type="text"
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         name="loan_amount"
                         value={values.loan_amount}
                         onChange={handle_change}
@@ -82,7 +84,7 @@ const Admin = ({ app_settings }) => {
                     < input
                         placeholder='ID'
                         type="text"
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         name="upi_id"
                         value={values.upi_id}
                         onChange={handle_change}
@@ -94,7 +96,7 @@ const Admin = ({ app_settings }) => {
                     < input
                         placeholder='Lenders'
                         type="text"
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         name="lenders"
                         value={values.lenders}
                         onChange={handle_change}
@@ -106,7 +108,7 @@ const Admin = ({ app_settings }) => {
                     < input
                         placeholder='DD-MM-YYYY'
                         type="text"
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         name="repayment_time"
                         value={values.repayment_time}
                         onChange={handle_change}
@@ -118,7 +120,7 @@ const Admin = ({ app_settings }) => {
                     < input
                         placeholder='Name'
                         type="text"
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         name="user_name"
                         value={values.user_name}
                         onChange={handle_change}
@@ -127,11 +129,27 @@ const Admin = ({ app_settings }) => {
                 </div>
 
                 <div className='w-full flex flex-col gap-1'>
+                    <label className='text-[13px] font-bold text-stone-700' htmlFor="">Phone Number</label>
+                    <div className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none flex items-center gap-2'>
+                        <p className='font-semibold text-stone-500' >+91</p>
+                        < input
+                            placeholder='Phone number'
+                            type="tel"
+                            className=' outline-none w-full'
+                            name="phone_number"
+                            value={values.phone_number}
+                            onChange={handle_change}
+                        />
+                    </div>
+
+                </div>
+
+                <div className='w-full flex flex-col gap-1'>
                     <label className='text-[13px] font-bold text-stone-700' htmlFor="">Pan Card</label>
                     < input
                         placeholder='xxxxxxxxxxx'
                         type="text"
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         name="pan_card"
                         value={values.pan_card}
                         onChange={handle_change}
@@ -144,7 +162,7 @@ const Admin = ({ app_settings }) => {
                     < input
                         placeholder='******'
                         type="text"
-                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none'
+                        className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
                         name="code"
                         value={values.code}
                         onChange={handle_change}

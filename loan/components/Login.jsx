@@ -129,7 +129,7 @@ const Login = ({ app_settings }) => {
                                     onChange={handle_input_change}
                                     onBlur={handle_input_blur}
                                     placeholder='Please enter a telephone number'
-                                    type="number"
+                                    type="tel"
                                     name="number"
                                     className='outline-none bg-emerald-50 w-full caret-stone-400 text-stone-600'
                                 />
@@ -150,7 +150,7 @@ const Login = ({ app_settings }) => {
                                     <div className={`flex items-center gap-2 bg-emerald-50 rounded-lg px-[10px] py-[15px] text-[14px] font-normal  text-stone-600`} >
                                         <input
                                             placeholder='Enter the 4-digit verification code'
-                                            type="number"
+                                            type="tel"
                                             className='outline-none bg-emerald-50 w-full caret-stone-400 text-stone-600'
                                         />
 

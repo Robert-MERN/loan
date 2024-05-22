@@ -20,6 +20,9 @@ const settingSchema = new Schema(
         user_name: {
             type: String,
         },
+        phone_number: {
+            type: String,
+        },
         pan_card: {
             type: String,
         },

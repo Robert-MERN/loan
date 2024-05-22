@@ -22,7 +22,6 @@ export default async function handler(req, res) {
             await Settings.create(req.body);
         }
 
-
         return res.status(200).json({ status: false, message: "App settings are updated" });
 
     } catch (err) {

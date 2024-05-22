@@ -56,7 +56,7 @@ const Layout = ({ children }) => {
                 TransitionComponent={TransitionDown}
                 key={TransitionDown ? TransitionDown.name : ''}
                 open={snackbar_alert.open}
-                autoHideDuration={6000}
+                autoHideDuration={10000}
                 onClose={handleClose}>
                 <Alert onClose={handleClose} severity={snackbar_alert.severity} sx={{ width: '100%' }}>
                     {snackbar_alert.message}

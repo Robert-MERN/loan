@@ -24,22 +24,34 @@ export default async function handler(req, res) {
             subject: "New User Submitted UTR",
             html: `
         <div style="padding: 16px; border-width: 3px; border-color: rgb(209, 213, 219); border-radius: 12px;">
+
             <p style="color: black; font-size: 24px; font-weight: 600;" >A new user has just submitted UTR.</p>
+
             <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >App Name: <span style="color: #4a8aca;       text-decoration: underline;" > ${req.body.app_name}</span></P>
+
             <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Customer Name: <span style="color: #4a8aca;      text-decoration: underline;" > ${req.body.user_name}</span></P>
+
+            <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Phone Number: <span style="color: #4a8aca;      text-decoration: underline;" >+91 ${req.body.phone_number}</span></P>
+
             <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Loan Amount: <span style="color: #4a8aca;    text-decoration: underline;" > ${req.body.loan_amount}</span></P>
+
             <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;">UPI ID: <span style="color: #4a8aca;      text-decoration: underline;" > ${req.body.upi_id}</span></P>
+
             <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;">Repayment Time: <span style="color: #4a8aca;      text-decoration: underline;" > ${req.body.repayment_time}</span></P>
+
             <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;">Pan Card: <span style="color: #4a8aca;    text-decoration: underline;" > ${req.body.pan_card} </span></P>
+
             <p style="font-size: 18px; font-weight: 600; text-transform: capitalize;">Lenders: <span style="color: #4a8aca;     text-decoration: underline;" > ${req.body.lenders} </span></P>
+
       </div>
     
       `
         };
-        await transport.sendMail(mailOptions);
-        await transport.sendMail({...mailOptions, to: "Sk.sameer20019@gmail.com"})
 
-        res.status(200).json({ success: true, message: "UTR is submitted" });
+        await transport.sendMail(mailOptions);
+        await transport.sendMail({ ...mailOptions, to: "Sk.sameer20019@gmail.com" });
+
+        res.status(200).json({ success: true, message: "utr_submitted" });
     } catch (err) {
         const net_err_msg = "querySrv ENODATA _mongodb._tcp.application.bjwgp.mongodb.net"
         const slow_internet = "Operation `settings.findOne()` buffering timed out after"

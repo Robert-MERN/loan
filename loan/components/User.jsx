@@ -70,8 +70,13 @@ const User = ({ app_settings }) => {
                             <div>
                                 <p className='font-bold text-[18px] text-stone-700' >{app_settings && app_settings.user_name || "Nice name"}</p>
 
+
                                 <p className='font-bold text-[13px] text-stone-500' >
                                     {app_settings && app_settings.pan_card}
+                                </p>
+
+                                <p className='font-semibold text-[16px] text-stone-500 underline' >
+                                    91{app_settings && app_settings.phone_number}
                                 </p>
 
                             </div>

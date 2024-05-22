@@ -43,38 +43,40 @@ const Repayment = ({ app_settings }) => {
 
     const regex = /^\d{12}$/;
 
-    const handle_submit = (e) => {
+    const handle_submit = async (e) => {
         e.preventDefault();
-        setAPIloading(true);
+        if (!select) {
+            return set_snackbar_alert({
+                open: true,
+                message: "Must select any payment method",
+                severity: "warning"
+            })
+        }
 
-        setTimeout(() => {
-            setAPIloading(false);
-
-            if (!select) {
+        if (utr && regex.test(utr)) {
+            const mail_res = await handle_submit_utr_notification(app_settings)
+            if (mail_res !== "utr_submitted") {
                 return set_snackbar_alert({
                     open: true,
-                    message: "Must select any payment method",
-                    severity: "warning"
+                    message: "Please try again!",
+                    severity: "error"
                 })
             }
+            set_utr("");
+            return set_snackbar_alert({
+                open: true,
+                message: "UTR submitted",
+                severity: "success"
+            })
+        } else {
+            set_snackbar_alert({
+                open: true,
+                message: "Invalid UTR",
+                severity: "warning"
+            })
+        }
 
-            if (utr && regex.test(utr)) {
-                handle_submit_utr_notification(app_settings)
-                set_snackbar_alert({
-                    open: true,
-                    message: "UTR submitted",
-                    severity: "success"
-                })
-                set_utr("");
-            } else {
-                set_snackbar_alert({
-                    open: true,
-                    message: "Invalid UTR",
-                    severity: "warning"
-                })
-            }
 
-        }, 1000)
 
     }
 
@@ -124,7 +126,7 @@ const Repayment = ({ app_settings }) => {
                 </div>
                 {/* Paytm */}
                 <div className='h-[55px] border-b border-zinc-100 flex items-center gap-[70px]' >
-                    <button  type="button"  onClick={() => set_select("paytm")} className={`border-blue-500 ${select === "paytm" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
+                    <button type="button" onClick={() => set_select("paytm")} className={`border-blue-500 ${select === "paytm" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
                         {select === "paytm" ?
                             <FaCheck />
                             :
@@ -137,7 +139,7 @@ const Repayment = ({ app_settings }) => {
                 </div>
                 {/* G-pay */}
                 <div className='h-[55px] border-b border-zinc-100 flex items-center gap-16' >
-                    <button  type="button"  onClick={() => set_select("gpay")} className={`border-blue-500 ${select === "gpay" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
+                    <button type="button" onClick={() => set_select("gpay")} className={`border-blue-500 ${select === "gpay" ? "bg-blue-500" : "bg-white"} border rounded-full p-[3px] text-[12px] font-thin text-white`} >
                         {select === "gpay" ?
                             <FaCheck />
                             :
@@ -178,7 +180,7 @@ const Repayment = ({ app_settings }) => {
                         value={utr}
                         onChange={e => set_utr(e.target.value)}
                         type="text"
-                        className='border-none outline-none text-[13px] caret-gray-500'
+                        className='border-none outline-none text-[13px] caret-gray-500 w-full'
                         placeholder='Input UTR number'
                     />
                 </div>
