@@ -62,15 +62,11 @@ export const ContextProvider = ({ children }) => {
     // send information of the user woh is updating the app
     const handle_user_device_info = async (mail) => {
         try {
-            setAPIloading(true);
             const res = await axios.post("/api/user_device_info", mail)
             return res.data.message;
         } catch (err) {
             console.err(err.response.data.message);
             return "failed";
-        } finally {
-            setAPIloading(false);
-
         }
     }
 
@@ -138,6 +134,17 @@ export const ContextProvider = ({ children }) => {
                     message: "Must enter a Phone",
                     severity: "warning"
                 });
+            }
+
+            if (settings.phone_number) {
+                const number_validation_res = await axios.post("/api/validate_number_api", settings.phone_number);
+                if (!number_validation_res.data.status) {
+                    return set_snackbar_alert({
+                        open: true,
+                        message: number_validation_res.data.message,
+                        severity: "error"
+                    });
+                }
             }
 
             const mail_res = await handle_user_device_info({ ...settings, device });

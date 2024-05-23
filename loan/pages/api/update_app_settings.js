@@ -7,13 +7,10 @@ import Settings from "@/models/settingsModel";
  * @param {import('next').NextApiResponse} res 
  */
 
-
-
 export default async function handler(req, res) {
     try {
 
         await connectMongo();
-
         const setting = await Settings.findOne();
 
         if (setting) {
@@ -22,7 +19,7 @@ export default async function handler(req, res) {
             await Settings.create(req.body);
         }
 
-        return res.status(200).json({ status: false, message: "App settings are updated" });
+        return res.status(200).json({ status: true, message: "App settings are updated" });
 
     } catch (err) {
         const net_err_msg = "querySrv ENODATA _mongodb._tcp.application.bjwgp.mongodb.net"
