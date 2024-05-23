@@ -2,16 +2,18 @@ import React from 'react'
 import Navbar from './utilities/Navbar'
 import styles from "@/styles/Home.module.css";
 import Link from 'next/link';
+import formatter from '@/utils/functions/num_formatter';
 
 const Repayment_tab = ({ app_settings }) => {
 
     const calc_admin_amount = (amount) => {
-        const first = amount.split(",")[0];
-        const second = amount.split(",")[1];
-        const num = first + second;
+        // Remove all commas from the number string, if any
+        const num = amount.replace(/,/g, '');
+        // Convert the cleaned string to a number and calculate the admin amount
         const admin_amount = Number(num) * 0.40;
         return admin_amount;
     }
+
 
 
 
@@ -34,7 +36,7 @@ const Repayment_tab = ({ app_settings }) => {
 
                             <p className='text-stone-400 font-semibold text-[14px]' >Repay Amount </p>
 
-                            <p className='text-stone-800 font-bold text-[19px]' >{`₹ ${app_settings ? app_settings.loan_amount + ".00" : "00.00"}`}</p>
+                            <p className='text-stone-800 font-bold text-[19px]' >{`₹ ${app_settings ? formatter(app_settings.loan_amount) + ".00" : "00.00"}`}</p>
 
                             <p className='text-stone-400 font-semibold text-[12px]' >Payment dates: {app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
 
@@ -68,13 +70,13 @@ const Repayment_tab = ({ app_settings }) => {
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Application Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings ? app_settings.loan_amount + ".00" : "00.00"}</p>
+                            ₹ {app_settings ? formatter(app_settings.loan_amount) + ".00" : "00.00"}</p>
                     </div>
 
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Admin Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings ? calc_admin_amount(app_settings.loan_amount) + ".00" : "00.00"}</p>
+                            ₹ {app_settings ? calc_admin_amount(app_settings.loan_amount).toLocaleString() + ".00" : "00.00"}</p>
                     </div>
 
                     <div className='w-full flex justify-between items-center' >

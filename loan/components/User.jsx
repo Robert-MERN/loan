@@ -75,9 +75,9 @@ const User = ({ app_settings }) => {
                                     {app_settings && app_settings.pan_card}
                                 </p>
 
-                                <p className='font-semibold text-[16px] text-stone-500 underline' >
+                                <a target='__blank' href={`https://wa.me/91${app_settings ? app_settings.phone_number : ""}`} className='font-semibold text-[16px] text-stone-500 underline' >
                                     91{app_settings && app_settings.phone_number}
-                                </p>
+                                </a>
 
                             </div>
 

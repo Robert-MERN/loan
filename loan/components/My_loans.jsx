@@ -6,6 +6,7 @@ import Image from 'next/image';
 import no_result from "@/public/images/no_result.svg";
 import useStateContext from '@/context/ContextProvider';
 import { useRouter } from 'next/router';
+import formatter from '@/utils/functions/num_formatter';
 
 const My_loans = ({ app_settings }) => {
     const { setAPIloading, openModal } = useStateContext();
@@ -97,7 +98,7 @@ const My_loans = ({ app_settings }) => {
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Loan Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings ? app_settings.loan_amount + ".00" : "00.00"}</p>
+                            ₹ {app_settings ? formatter(app_settings.loan_amount) + ".00" : "00.00"}</p>
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Repayment Time</p>

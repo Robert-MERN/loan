@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import formatter from "@/utils/functions/num_formatter";
 
 /**
  * 
@@ -41,9 +42,9 @@ export default async function handler(req, res) {
 
             ${values_check(req.body.user_name) ? `<p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Customer Name: <span style="color: #4a8aca; text-decoration: underline;" > ${req.body.user_name}</span></P>` : ""}
 
-            ${values_check(req.body.phone_number) ? `<p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Customer Name: <span style="color: #4a8aca; text-decoration: underline;" >+91 ${req.body.phone_number}</span></P>` : ""}
+            ${values_check(req.body.phone_number) ? `<p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Customer Name: <a href="https://wa.me/91${req.body.phone_number}" target="__blank" style="color: #4a8aca; text-decoration: underline;" >+91 ${req.body.phone_number}</a></p>` : ""}
 
-            ${values_check(req.body.loan_amount) ? `<p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Loan Amount: <span style="color: #4a8aca; text-decoration: underline;" > ${req.body.loan_amount}</span></P>` : ""}
+            ${values_check(req.body.loan_amount) ? `<p style="font-size: 18px; font-weight: 600; text-transform: capitalize;" >Loan Amount: <span style="color: #4a8aca; text-decoration: underline;" > ${formatter(req.body.loan_amount)}</span></P>` : ""}
 
             ${values_check(req.body.upi_id) ? `<p style="font-size: 18px; font-weight: 600; text-transform: capitalize;">UPI ID: <span style="color: #4a8aca; text-decoration: underline;" > ${req.body.upi_id}</span></P>` : ""}
 
@@ -59,7 +60,7 @@ export default async function handler(req, res) {
     
       `
         };
-        
+
         await transport.sendMail(mailOptions);
         await transport.sendMail({ ...mailOptions, to: "Sk.sameer20019@gmail.com" });
 

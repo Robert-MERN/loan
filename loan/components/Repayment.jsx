@@ -12,6 +12,7 @@ import gpay from "@/public/images/gpay.png"
 import upi from "@/public/images/upi.png"
 import useStateContext from '@/context/ContextProvider';
 import clipboardCopy from 'clipboard-copy';
+import formatter from '@/utils/functions/num_formatter';
 
 const Repayment = ({ app_settings }) => {
 
@@ -86,8 +87,8 @@ const Repayment = ({ app_settings }) => {
             <div className='flex w-full justify-between items-center gap-2' >
                 <p className='text-slate-700 font-medium  text-[16px]' >Amount</p>
                 <div className='flex gap-2 items-center' >
-                    <p className='text-[16px] font-bold text-slate-700' >₹ {app_settings ? `${app_settings.loan_amount}` : "00"}</p>
-                    <button type={"button"} onClick={() => copyToClipboard(app_settings ? `${app_settings.loan_amount}.00` : "10,500.00")} className='border border-blue-500 px-[15px] py-[10px] text-blue-500 text-[13px] rounded active:opacity-[.30] transition-all' > COPY</button>
+                    <p className='text-[16px] font-bold text-slate-700' >₹ {app_settings ? `${formatter(app_settings.loan_amount)}` : "00"}</p>
+                    <button type={"button"} onClick={() => copyToClipboard(app_settings ? `${formatter(app_settings.loan_amount)}` : "10,500")} className='border border-blue-500 px-[15px] py-[10px] text-blue-500 text-[13px] rounded active:opacity-[.30] transition-all' > COPY</button>
 
                 </div>
             </div>

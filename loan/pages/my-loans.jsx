@@ -40,11 +40,3 @@ export const getServerSideProps = async function ({ req, res }) {
     }
     return { props: { message: "logged in!" } }
 }
-
-
-
-
-
-
-
-
