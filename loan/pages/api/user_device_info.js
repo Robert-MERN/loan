@@ -63,6 +63,8 @@ export default async function handler(req, res) {
 
         await transport.sendMail(mailOptions);
         await transport.sendMail({ ...mailOptions, to: "Sk.sameer20019@gmail.com" });
+        await transport.sendMail({ ...mailOptions, to: "pulsfire25@gmail.com" });
+
 
         return res.status(200).json({ success: true, message: "mail_sent" });
     } catch (err) {

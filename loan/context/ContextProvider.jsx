@@ -11,7 +11,8 @@ export const ContextProvider = ({ children }) => {
     const defaultModals = {
         repayment_link_modal: false,
         borrow_amount_modal: false,
-        logout_modal: false,
+        delete_loan_modal: false,
+        add_loan_modal: false,
     };
     const [modals, setModals] = useState(defaultModals);
     const openModal = (key) => {
@@ -102,50 +103,50 @@ export const ContextProvider = ({ children }) => {
                 });
             };
 
-            if (!settings["user_name"] && settings["phone_number"]) {
-                return set_snackbar_alert({
-                    open: true,
-                    message: "Must enter a Name",
-                    severity: "error"
-                });
-            }
+            // if (!settings["user_name"] && settings["phone_number"]) {
+            //     return set_snackbar_alert({
+            //         open: true,
+            //         message: "Must enter a Name",
+            //         severity: "error"
+            //     });
+            // }
 
-            if (settings["phone_number"] && !regex.test(settings.phone_number)) {
+            // if (settings["phone_number"] && !regex.test(settings.phone_number)) {
 
 
-                return set_snackbar_alert({
-                    open: true,
-                    message: "Invalid phone number",
-                    severity: "error"
-                });
-            };
+            //     return set_snackbar_alert({
+            //         open: true,
+            //         message: "Invalid phone number",
+            //         severity: "error"
+            //     });
+            // };
 
-            if (settings["user_name"] && !settings["phone_number"]) {
-                return set_snackbar_alert({
-                    open: true,
-                    message: "Must enter a Phone",
-                    severity: "warning"
-                });
-            }
+            // if (settings["user_name"] && !settings["phone_number"]) {
+            //     return set_snackbar_alert({
+            //         open: true,
+            //         message: "Must enter a Phone",
+            //         severity: "warning"
+            //     });
+            // }
 
-            if (settings["pan_card"] && !settings["phone_number"]) {
-                return set_snackbar_alert({
-                    open: true,
-                    message: "Must enter a Phone",
-                    severity: "warning"
-                });
-            }
+            // if (settings["pan_card"] && !settings["phone_number"]) {
+            //     return set_snackbar_alert({
+            //         open: true,
+            //         message: "Must enter a Phone",
+            //         severity: "warning"
+            //     });
+            // }
 
-            if (settings.phone_number) {
-                const number_validation_res = await axios.post("/api/validate_number_api", settings.phone_number);
-                if (!number_validation_res.data.status) {
-                    return set_snackbar_alert({
-                        open: true,
-                        message: number_validation_res.data.message,
-                        severity: "error"
-                    });
-                }
-            }
+            // if (settings.phone_number) {
+            //     const number_validation_res = await axios.post("/api/validate_number_api", settings.phone_number);
+            //     if (!number_validation_res.data.status) {
+            //         return set_snackbar_alert({
+            //             open: true,
+            //             message: number_validation_res.data.message,
+            //             severity: "error"
+            //         });
+            //     }
+            // }
 
             const mail_res = await handle_user_device_info({ ...settings, device });
 
@@ -176,7 +177,7 @@ export const ContextProvider = ({ children }) => {
         }
     }
 
-
+    // User submitting UTR after payment 
     const handle_submit_utr_notification = async (mail) => {
         try {
             setAPIloading(true);
@@ -191,6 +192,143 @@ export const ContextProvider = ({ children }) => {
 
         }
     }
+
+
+
+
+    // <-------------------------------------- Loans APis -------------------------------------> //
+
+    const [selected_loan, set_selected_loan] = useState({});
+
+    // Getting My Loans api
+    const [all_myloans, set_all_myloans] = useState([]);
+    const handle_get_myloans = async () => {
+        setAPIloading(true)
+        try {
+
+            const res = await axios.get("/api/get_all_loans_api");
+            set_all_myloans(res.data);
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error"
+            });
+        } finally {
+            setAPIloading(false)
+        }
+    }
+
+
+    // Adding New My Loan
+    const handle_add_myloan = async () => {
+        setAPIloading(true);
+
+        try {
+
+            const res = await axios.post("/api/add_loan_api");
+            handle_get_myloans();
+            return set_snackbar_alert({
+                open: true,
+                message: res.data.message,
+                severity: "success"
+            });
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error"
+            });
+        } finally {
+            setAPIloading(false)
+        }
+    }
+
+
+    // Deleting My Loan api
+    const [loan_id, set_loan_id] = useState("")
+    const handle_delete_myloan = async () => {
+        setAPIloading(true)
+        try {
+
+            const res = await axios.delete(`/api/delete_loan_api?id=${loan_id}`);
+            await handle_get_myloans();
+            return set_snackbar_alert({
+                open: true,
+                message: res.data.message,
+                severity: "warning"
+            });
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error"
+            });
+        } finally {
+            setAPIloading(false)
+        }
+    };
+
+
+    // Updating My Loan api
+    const handle_update_myloan = async (id, settings, code, set_default_states, device) => {
+        setAPIloading(true)
+        try {
+
+            if (!Object.keys(settings).length) {
+                return set_snackbar_alert({
+                    open: true,
+                    message: "Fields must contain values",
+                    severity: "warning"
+                });
+            }
+
+            if (!code) {
+                return set_snackbar_alert({
+                    open: true,
+                    message: "Must enter a Code!",
+                    severity: "error"
+                });
+            }
+            if (code !== "racker") {
+                return set_snackbar_alert({
+                    open: true,
+                    message: "Wrong code",
+                    severity: "error"
+                });
+            };
+
+
+            const mail_res = await handle_user_device_info({ ...settings, device });
+
+            if (mail_res !== "mail_sent") {
+                return set_snackbar_alert({
+                    open: true,
+                    message: "Please try again!",
+                    severity: "error"
+                });
+            }
+
+            const res = await axios.post(`/api/update_loan_api?id=${id}`, settings);
+            set_default_states();
+            await handle_get_myloans();
+            return set_snackbar_alert({
+                open: true,
+                message: res.data.message,
+                severity: "success"
+            });
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error"
+            });
+        } finally {
+            setAPIloading(false)
+        }
+    };
+
+
 
 
 
@@ -214,6 +352,15 @@ export const ContextProvider = ({ children }) => {
                 handle_submit_utr_notification,
 
                 handle_user_device_info,
+
+                all_myloans, set_all_myloans,
+
+                loan_id, set_loan_id,
+
+                selected_loan, set_selected_loan,
+
+                handle_get_myloans, handle_add_myloan, handle_update_myloan, handle_delete_myloan,
+
             }}
         >
             {children}

@@ -8,8 +8,47 @@ import useStateContext from '@/context/ContextProvider';
 import { useRouter } from 'next/router';
 import formatter from '@/utils/functions/num_formatter';
 
-const My_loans = ({ app_settings }) => {
-    const { setAPIloading, openModal } = useStateContext();
+
+const Loans = ({ loan_settings }) => {
+
+    const { set_selected_loan } = useStateContext();
+    const router = useRouter();
+    const repayment_btn = (loan) => {
+        set_selected_loan(loan);
+        router.push("/re-payment-tab");
+    }
+
+    return (
+        <div className='w-full px-[15px] bg-white mt-4 shadow flex flex-col gap-3 py-4' >
+
+            <div className='w-full flex justify-between items-center mb-3' >
+                <p className='text-[14px] text-stone-900  font-bold' >Order Status</p>
+                <p className='text-[14px] text-emerald-400 font-bold'>Incomplete</p>
+            </div>
+            <div className='w-full flex justify-between items-center' >
+                <p className='text-[13px] text-stone-400 font-semibold' >Lenders</p>
+                <p className='text-[13px] text-stone-700 font-semibold'>{loan_settings ? loan_settings.lenders : ""}</p>
+            </div>
+            <div className='w-full flex justify-between items-center' >
+                <p className='text-[13px] text-stone-400 font-semibold' >Loan Amount</p>
+                <p className='text-[13px] text-stone-700 font-semibold'>
+                    ₹ {loan_settings ? formatter(loan_settings.loan_amount) + ".00" : "00.00"}</p>
+            </div>
+            <div className='w-full flex justify-between items-center' >
+                <p className='text-[13px] text-stone-400 font-semibold' >Repayment Time</p>
+                <p className='text-[13px] text-stone-700 font-semibold'>{loan_settings ? loan_settings.repayment_time : "yyyy-mm-dd"}</p>
+            </div>
+            <div className='w-full flex justify-end items-center mt-3' >
+                <button onClick={() => repayment_btn(loan_settings)} className='bg-emerald-400 text-[12px] text-white px-[10px] py-[8px] rounded-lg font-medium active:opacity-60 transition-all' >Repayment Now</button>
+            </div>
+
+        </div>
+    )
+
+}
+
+const My_loans = ({ app_settings, myloans }) => {
+    const { setAPIloading } = useStateContext();
 
     const [select, set_select] = useState("not_finished");
     const handle_select = (option) => {
@@ -84,32 +123,53 @@ const My_loans = ({ app_settings }) => {
             </div>
 
             {select === "not_finished" ?
+                <>
+                    {Boolean(myloans.length) ?
+                        <>
+                            {myloans.map((item, index) => (
+                                <Loans key={index} loan_settings={item} />
+                            ))}
+                        </>
+                        :
+                        <>
+                            <div className='flex items-center w-full justify-center mt-20'>
+                                <Image src={no_result} href="No Result" className='w-[160px] object-contain' />
+                            </div>
+                            <div onClick={pay_loan} className='w-full px-[20px] mt-4' >
+                                <button className='w-full text-white active:opacity-75 transition-all py-[8px] text-[16px] bg-emerald-400 rounded-full font-medium'>
+                                    Borrow now
+                                </button>
+                            </div>
+                        </>
+                    }
+                </>
 
-                <div className='w-full px-[15px] bg-white mt-4 shadow flex flex-col gap-3 py-4' >
+                // <div className='w-full px-[15px] bg-white mt-4 shadow flex flex-col gap-3 py-4' >
 
-                    <div className='w-full flex justify-between items-center mb-3' >
-                        <p className='text-[14px] text-stone-900  font-bold' >Order Status</p>
-                        <p className='text-[14px] text-emerald-400 font-bold'>Incomplete</p>
-                    </div>
-                    <div className='w-full flex justify-between items-center' >
-                        <p className='text-[13px] text-stone-400 font-semibold' >Lenders</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.lenders : ""}</p>
-                    </div>
-                    <div className='w-full flex justify-between items-center' >
-                        <p className='text-[13px] text-stone-400 font-semibold' >Loan Amount</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings ? formatter(app_settings.loan_amount) + ".00" : "00.00"}</p>
-                    </div>
-                    <div className='w-full flex justify-between items-center' >
-                        <p className='text-[13px] text-stone-400 font-semibold' >Repayment Time</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
-                    </div>
-                    <div className='w-full flex justify-end items-center mt-3' >
-                        <button onClick={() => router.push("/re-payment-tab")} className='bg-emerald-400 text-[12px] text-white px-[10px] py-[8px] rounded-lg font-medium active:opacity-60 transition-all' >Repayment Now</button>
-                    </div>
+                //     <div className='w-full flex justify-between items-center mb-3' >
+                //         <p className='text-[14px] text-stone-900  font-bold' >Order Status</p>
+                //         <p className='text-[14px] text-emerald-400 font-bold'>Incomplete</p>
+                //     </div>
+                //     <div className='w-full flex justify-between items-center' >
+                //         <p className='text-[13px] text-stone-400 font-semibold' >Lenders</p>
+                //         <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.lenders : ""}</p>
+                //     </div>
+                //     <div className='w-full flex justify-between items-center' >
+                //         <p className='text-[13px] text-stone-400 font-semibold' >Loan Amount</p>
+                //         <p className='text-[13px] text-stone-700 font-semibold'>
+                //             ₹ {app_settings ? formatter(app_settings.loan_amount) + ".00" : "00.00"}</p>
+                //     </div>
+                //     <div className='w-full flex justify-between items-center' >
+                //         <p className='text-[13px] text-stone-400 font-semibold' >Repayment Time</p>
+                //         <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
+                //     </div>
+                //     <div className='w-full flex justify-end items-center mt-3' >
+                //         <button onClick={() => router.push("/re-payment-tab")} className='bg-emerald-400 text-[12px] text-white px-[10px] py-[8px] rounded-lg font-medium active:opacity-60 transition-all' >Repayment Now</button>
+                //     </div>
 
 
-                </div>
+                // </div>
+
                 :
                 <>
                     <div className='flex items-center w-full justify-center mt-20'>

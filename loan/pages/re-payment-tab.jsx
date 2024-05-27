@@ -9,11 +9,12 @@ import { getCookie } from 'cookies-next';
 
 export default function repayment_tab() {
 
-    const { handle_get_app_settings } = useStateContext();
+    const { handle_get_app_settings, selected_loan } = useStateContext();
     const [app_settings, set_app_settings] = useState(null);
 
     useEffect(() => {
-        handle_get_app_settings(set_app_settings)
+        handle_get_app_settings(set_app_settings);
+
     }, [])
 
 
@@ -24,7 +25,7 @@ export default function repayment_tab() {
                 <meta name="description" content={`${app_settings && app_settings.app_name} - Repayment`} />
                 <link rel="icon" href="/images/icon_logo.png" />
             </Head>
-            <Repayment_tab app_settings={app_settings} />
+            <Repayment_tab app_settings={{ ...app_settings, ...selected_loan }} />
         </div>
     )
 }

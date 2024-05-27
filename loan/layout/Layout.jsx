@@ -8,7 +8,8 @@ import { Slide } from '@mui/material';
 import Repayment_link_modal from '@/utils/modals/Repayment_link_modal';
 import Borrow_amount_modal from '@/utils/modals/Borrow_amount_modal';
 import styles from "@/styles/Home.module.css";
-import Logout_modal from '@/utils/modals/Logout_modal';
+import Delete_loan_modal from '@/utils/modals/Delete_loan_modal';
+import Add_loan_modal from '@/utils/modals/Add_loan_modal';
 
 
 
@@ -49,7 +50,9 @@ const Layout = ({ children }) => {
 
             <Borrow_amount_modal open={modals} close={() => closeModal("borrow_amount_modal")} />
 
-            <Logout_modal open={modals} close={() => closeModal("logout_modal")} />
+            <Delete_loan_modal open={modals} close={() => closeModal("delete_loan_modal")} />
+            
+            <Add_loan_modal open={modals} close={() => closeModal("add_loan_modal")} />
 
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}

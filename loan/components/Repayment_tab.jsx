@@ -7,6 +7,7 @@ import formatter from '@/utils/functions/num_formatter';
 const Repayment_tab = ({ app_settings }) => {
 
     const calc_admin_amount = (amount) => {
+        if (!amount) return amount;
         // Remove all commas from the number string, if any
         const num = amount.replace(/,/g, '');
         // Convert the cleaned string to a number and calculate the admin amount
@@ -36,9 +37,9 @@ const Repayment_tab = ({ app_settings }) => {
 
                             <p className='text-stone-400 font-semibold text-[14px]' >Repay Amount </p>
 
-                            <p className='text-stone-800 font-bold text-[19px]' >{`₹ ${app_settings ? formatter(app_settings.loan_amount) + ".00" : "00.00"}`}</p>
+                            <p className='text-stone-800 font-bold text-[19px]' >{`₹ ${app_settings.loan_amount ? formatter(app_settings.loan_amount) + ".00" : "00.00"}`}</p>
 
-                            <p className='text-stone-400 font-semibold text-[12px]' >Payment dates: {app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
+                            <p className='text-stone-400 font-semibold text-[12px]' >Payment dates: {app_settings.repayment_time ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
 
                             <button className='px-[10px] py-[6px] font-medium text-emerald-400 bg-stone-100 rounded-md text-[14px]' >
                                 Incomplete
@@ -50,7 +51,7 @@ const Repayment_tab = ({ app_settings }) => {
 
 
                 <p className={`text-stone-800 font-semibold text-[11px] px-[15px] mt-[90px] mb-4`}>
-                    You can borrow <span className='text-emerald-400' >{`₹ ${app_settings ? app_settings.loan_amount + ".00" : "00.00"}`}</span> next time after repayment on time
+                    You can borrow <span className='text-emerald-400' >{`₹ ${app_settings.loan_amount ? app_settings.loan_amount + ".00" : "00.00"}`}</span> next time after repayment on time
                 </p>
 
                 <div className='w-full px-[15px] bg-white mt-4 shadow flex flex-col gap-4 py-4' >
@@ -60,7 +61,7 @@ const Repayment_tab = ({ app_settings }) => {
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Lending Institutions</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.lenders : ""}</p>
+                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings.lenders ? app_settings.lenders : ""}</p>
                     </div>
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Loan Term</p>
@@ -70,18 +71,18 @@ const Repayment_tab = ({ app_settings }) => {
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Application Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings ? formatter(app_settings.loan_amount) + ".00" : "00.00"}</p>
+                            ₹ {app_settings.loan_amount ? formatter(app_settings.loan_amount) + ".00" : "00.00"}</p>
                     </div>
 
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Admin Amount</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>
-                            ₹ {app_settings ? calc_admin_amount(app_settings.loan_amount).toLocaleString() + ".00" : "00.00"}</p>
+                            ₹ {app_settings.loan_amount ? calc_admin_amount(app_settings.loan_amount)?.toLocaleString() + ".00" : "00.00"}</p>
                     </div>
 
                     <div className='w-full flex justify-between items-center' >
                         <p className='text-[13px] text-stone-400 font-semibold' >Expire Date</p>
-                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
+                        <p className='text-[13px] text-stone-700 font-semibold'>{app_settings.repayment_time ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
                     </div>
                     <div className='w-full mt-3' >
                         <Link href="/re-payment" target='__blank' >

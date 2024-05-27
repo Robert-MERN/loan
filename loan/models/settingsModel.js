@@ -5,16 +5,7 @@ const settingSchema = new Schema(
         app_name: {
             type: String,
         },
-        loan_amount: {
-            type: String,
-        },
         upi_id: {
-            type: String,
-        },
-        lenders: {
-            type: String,
-        },
-        repayment_time: {
             type: String,
         },
         user_name: {

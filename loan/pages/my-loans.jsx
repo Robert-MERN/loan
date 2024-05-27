@@ -7,12 +7,13 @@ import styles from "@/styles/Home.module.css";
 import { getCookie } from 'cookies-next';
 
 const my_loan = () => {
-    const { handle_get_app_settings, set_footer_tab } = useStateContext();
+    const { handle_get_app_settings, set_footer_tab, handle_get_myloans, all_myloans } = useStateContext();
     const [app_settings, set_app_settings] = useState(null);
 
     useEffect(() => {
         set_footer_tab("/my-loans")
         handle_get_app_settings(set_app_settings)
+        handle_get_myloans();
     }, []);
     return (
         <div className={`${styles.scrollBar}`} >
@@ -21,7 +22,7 @@ const my_loan = () => {
                 <meta name="description" content={`${app_settings && app_settings.app_name} - My Loans`} />
                 <link rel="icon" href="/images/icon_logo.png" />
             </Head>
-            <My_loans app_settings={app_settings} />
+            <My_loans app_settings={app_settings} myloans={all_myloans} />
         </div>
     )
 }
