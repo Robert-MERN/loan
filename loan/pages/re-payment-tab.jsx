@@ -25,7 +25,9 @@ export default function repayment_tab() {
                 <meta name="description" content={`${app_settings && app_settings.app_name} - Repayment`} />
                 <link rel="icon" href="/images/icon_logo.png" />
             </Head>
-            <Repayment_tab app_settings={{ ...app_settings, ...selected_loan }} />
+            <Repayment_tab
+                app_settings={{ ...app_settings, ...selected_loan }}
+            />
         </div>
     )
 }

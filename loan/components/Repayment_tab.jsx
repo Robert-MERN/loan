@@ -4,7 +4,7 @@ import styles from "@/styles/Home.module.css";
 import Link from 'next/link';
 import formatter from '@/utils/functions/num_formatter';
 
-const Repayment_tab = ({ app_settings }) => {
+const Repayment_tab = ({ app_settings, set_loan_amt_repayment_link }) => {
 
     const calc_admin_amount = (amount) => {
         if (!amount) return amount;
@@ -86,7 +86,7 @@ const Repayment_tab = ({ app_settings }) => {
                     </div>
                     <div className='w-full mt-3' >
                         <Link href="/re-payment" target='__blank' >
-                            <button className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
+                            <button onClick={() => set_loan_amt_repayment_link(app_settings.loan_amount)} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
                         </Link>
                     </div>
                 </div>

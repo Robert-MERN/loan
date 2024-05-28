@@ -29,7 +29,6 @@ export const ContextProvider = ({ children }) => {
 
 
 
-
     const [borrow_amount, set_borrow_amount] = useState("15,000.00");
     const [footer_tab, set_footer_tab] = useState("/");
 
