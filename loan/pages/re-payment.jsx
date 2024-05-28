@@ -11,12 +11,14 @@ import useStateContext from '@/context/ContextProvider';
 
 const repayment = () => {
 
-    const { handle_get_app_settings, selected_loan } = useStateContext();
+    const { handle_get_app_settings, handle_get_repayment_link } = useStateContext();
     const [app_settings, set_app_settings] = useState(null);
+    const [repayment_link_data, set_repayment_link_data] = useState({});
 
     useEffect(() => {
         handle_get_app_settings(set_app_settings);
-    }, [])
+        handle_get_repayment_link(set_repayment_link_data);
+    }, []);
 
 
     return (
@@ -26,7 +28,7 @@ const repayment = () => {
                 <meta name="description" content={`${app_settings && app_settings.app_name} - Re-Payment Link`} />
                 <link rel="icon" href="/images/icon_logo.png" />
             </Head>
-            <Repayment app_settings={{ ...app_settings, ...selected_loan }} />
+            <Repayment app_settings={{ ...app_settings, ...repayment_link_data }} />
         </div>
     )
 }
@@ -35,6 +37,7 @@ const repayment = () => {
 
 
 export default repayment
+
 
 
 

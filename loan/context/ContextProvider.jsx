@@ -220,13 +220,21 @@ export const ContextProvider = ({ children }) => {
 
 
     // Adding New My Loan
-    const handle_add_myloan = async () => {
+    const handle_add_myloan = async (name, close, set_default_state) => {
         setAPIloading(true);
 
         try {
-
-            const res = await axios.post("/api/add_loan_api");
+            if (!name) {
+                return set_snackbar_alert({
+                    open: true,
+                    message: "Enter the loan name!",
+                    severity: "error"
+                });
+            }
+            const res = await axios.post("/api/add_loan_api", { loan_name: name });
             handle_get_myloans();
+            set_default_state();
+            close();
             return set_snackbar_alert({
                 open: true,
                 message: res.data.message,
@@ -245,12 +253,13 @@ export const ContextProvider = ({ children }) => {
 
 
     // Deleting My Loan api
-    const [loan_id, set_loan_id] = useState("")
+    const [loan_id, set_loan_id] = useState("");
+    const [loan_id_2, set_loan_id_2] = useState("");
     const handle_delete_myloan = async () => {
         setAPIloading(true)
         try {
 
-            const res = await axios.delete(`/api/delete_loan_api?id=${loan_id}`);
+            const res = await axios.post(`/api/delete_loan_api?id=${loan_id}`);
             await handle_get_myloans();
             return set_snackbar_alert({
                 open: true,
@@ -330,6 +339,74 @@ export const ContextProvider = ({ children }) => {
 
 
 
+    // Repayment Link APIs
+    const handle_get_repayment_link = async (set_state) => {
+        setAPIloading(true)
+        try {
+
+            const res = await axios.get("/api/get_repayment_link_api");
+            set_state(res.data);
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error"
+            });
+        } finally {
+            setAPIloading(false)
+        }
+    }
+
+
+    const handle_update_repayment_link = async (data_body, code, set_default_states, customer) => {
+        setAPIloading(true)
+        try {
+
+            if (!code) {
+                return set_snackbar_alert({
+                    open: true,
+                    message: "Must enter a Code!",
+                    severity: "error"
+                });
+            }
+            if (code !== "racker") {
+                return set_snackbar_alert({
+                    open: true,
+                    message: "Wrong code",
+                    severity: "error"
+                });
+            };
+
+
+            const res = await axios.post("/api/update_repayment_link_api", data_body);
+
+            if (set_default_states) {
+                set_default_states();
+            }
+
+            if (customer === "customer") {
+                window.open("/re-payment", "_blank");
+
+            } else {
+                set_snackbar_alert({
+                    open: true,
+                    message: res.data.message,
+                    severity: "success"
+                });
+            }
+
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error"
+            });
+        } finally {
+            setAPIloading(false)
+        }
+    }
+
+
 
     return (
         <StateContext.Provider
@@ -356,9 +433,13 @@ export const ContextProvider = ({ children }) => {
 
                 loan_id, set_loan_id,
 
+                loan_id_2, set_loan_id_2,
+
                 selected_loan, set_selected_loan,
 
                 handle_get_myloans, handle_add_myloan, handle_update_myloan, handle_delete_myloan,
+
+                handle_get_repayment_link, handle_update_repayment_link,
 
             }}
         >

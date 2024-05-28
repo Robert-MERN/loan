@@ -1,7 +1,6 @@
 import connectMongo from "@/utils/functions/connectMongo"
-import Myloans from "@/models/myloansModel";
 import Repayments from "@/models/repaymentModal";
-import mongoose from "mongoose";
+import Myloans from "@/models/myloansModel";
 
 /**
  * 
@@ -14,22 +13,23 @@ import mongoose from "mongoose";
 export default async function handler(req, res) {
     try {
 
-        const { id } = req.query;
         await connectMongo();
+
+        const myloan = await Myloans.findById(req.body.loan_id);
+
+        if (!myloan) {
+            return res.status(501).json({ status: false, message: `Reload your "My-Loans" page!` });
+        }
+
         const repayment = await Repayments.findOne();
 
-        if (repayment) {
-            const repayment_exists = await Repayments.findOne({ loan_id: id });
-            if (repayment_exists) {
-                await Repayments.findOneAndDelete({ loan_id: id });
-            }
+        if (!repayment) {
+            await Repayments.create(req.body);
+        } else {
+            await Repayments.findOneAndUpdate(req.body);
         }
-        await Myloans.findByIdAndDelete(id);
-        const myloan = await Myloans.findOne();
-        const { _id: loan_id, loan_name } = myloan;
-        await Repayments.create({ loan_id, loan_name });
 
-        return res.status(200).json({ status: true, message: "Loan is deleted!" });
+        return res.status(200).json({ status: true, message: "Repayment link is updated!" });
 
 
     } catch (err) {
@@ -50,4 +50,5 @@ export default async function handler(req, res) {
 
         }
     }
-};
+}
+

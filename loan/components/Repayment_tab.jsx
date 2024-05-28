@@ -1,10 +1,10 @@
 import React from 'react'
 import Navbar from './utilities/Navbar'
 import styles from "@/styles/Home.module.css";
-import Link from 'next/link';
 import formatter from '@/utils/functions/num_formatter';
 
-const Repayment_tab = ({ app_settings, set_loan_amt_repayment_link }) => {
+const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
+
 
     const calc_admin_amount = (amount) => {
         if (!amount) return amount;
@@ -16,7 +16,12 @@ const Repayment_tab = ({ app_settings, set_loan_amt_repayment_link }) => {
     }
 
 
-
+    const generate_link = () => {
+        handle_update_repayment_link({
+            loan_id: app_settings.loan_id,
+            loan_name: app_settings.loan_name
+        }, "racker", "", "customer");
+    }
 
     return (
         <div className='w-screen min-h-screen relative bg-stone-100' >
@@ -85,9 +90,7 @@ const Repayment_tab = ({ app_settings, set_loan_amt_repayment_link }) => {
                         <p className='text-[13px] text-stone-700 font-semibold'>{app_settings.repayment_time ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
                     </div>
                     <div className='w-full mt-3' >
-                        <Link href="/re-payment" target='__blank' >
-                            <button onClick={() => set_loan_amt_repayment_link(app_settings.loan_amount)} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
-                        </Link>
+                        <button onClick={generate_link} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
                     </div>
                 </div>
             </div>

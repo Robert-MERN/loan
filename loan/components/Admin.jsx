@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 
 
-const Admin = ({ app_settings, device_info }) => {
+const Admin = ({ app_settings, device_info, repayment_link_data }) => {
 
     const {
         handle_update_app_settings,
@@ -15,6 +15,9 @@ const Admin = ({ app_settings, device_info }) => {
         all_myloans,
         loan_id,
         set_loan_id,
+        loan_id_2,
+        set_loan_id_2,
+        handle_update_repayment_link,
         openModal,
     } = useStateContext();
 
@@ -22,7 +25,7 @@ const Admin = ({ app_settings, device_info }) => {
 
     useEffect(() => {
 
-        if (customize === "loan_customization") {
+        if (customize !== "app_customization") {
             handle_get_myloans();
         };
 
@@ -44,10 +47,18 @@ const Admin = ({ app_settings, device_info }) => {
         code: "",
     }
 
+    const default_State_3 = {
+        loan_name: "",
+        loan_id: "",
+        code: "",
+    }
+
 
     const [values, set_values] = useState(default_State);
 
     const [values_2, set_values_2] = useState(default_State_2);
+
+    const [values_3, set_values_3] = useState(default_State_3);
 
 
     const handle_change = (e) => {
@@ -59,6 +70,12 @@ const Admin = ({ app_settings, device_info }) => {
         const { name, value } = e.target;
         set_values_2(prev => ({ ...prev, [name]: value }));
     }
+
+    const handle_change_3 = (e) => {
+        const { name, value } = e.target;
+        set_values_3(prev => ({ ...prev, [name]: value }));
+    }
+
 
 
     const delete_empty_pairs = (obj) => {
@@ -77,14 +94,20 @@ const Admin = ({ app_settings, device_info }) => {
 
     const set_default_states_2 = () => {
         set_values_2(default_State_2);
+    };
+
+    const set_default_states_3 = () => {
+        set_values_3(default_State_3);
     }
+
 
     const handle_update = async (targ, val) => {
         const { code, ...rest } = val;
         const settings = delete_empty_pairs(rest);
         if (targ === "app") {
             handle_update_app_settings(settings, code, set_default_states, device_info, handle_user_device_info);
-        } else {
+
+        } else if (targ === "loan") {
             var _id = "";
             if (!loan_id) {
                 _id = all_myloans[0]._id;
@@ -92,6 +115,17 @@ const Admin = ({ app_settings, device_info }) => {
                 _id = loan_id
             }
             handle_update_myloan(_id, settings, code, set_default_states_2, device_info, handle_user_device_info);
+
+        } else if (targ === "repayment") {
+            var _id_2 = "";
+            if (!loan_id_2) {
+                _id_2 = all_myloans[0]._id;
+            } else {
+                _id_2 = loan_id_2
+            }
+            const obj_loan = all_myloans.find(e => e._id.includes(_id_2));
+            const { _id, loan_name } = obj_loan;
+            handle_update_repayment_link({ loan_id: _id, loan_name }, code, set_default_states_3);
         }
     }
 
@@ -105,7 +139,7 @@ const Admin = ({ app_settings, device_info }) => {
                     <button
                         type='button'
                         onClick={() => set_customize("app_customization")}
-                        className={`w-full active:opacity-60 py-[9px] rounded-s-md  text-[12px] md:text-[15px] transition-all font-semibold ${customize === "app_customization" ? "bg-emerald-500 hover:bg-emerald-400 text-white" : "bg-stone-400 hover:bg-stone-500 text-white"}`}
+                        className={`w-full active:opacity-60 py-[9px] rounded-s-md border-r border-gray-300 text-[12px] md:text-[15px] transition-all font-semibold ${customize === "app_customization" ? "bg-emerald-500 hover:bg-emerald-400 text-white" : "bg-stone-400 hover:bg-stone-500 text-white"}`}
                     >
                         App Settings
                     </button>
@@ -113,9 +147,16 @@ const Admin = ({ app_settings, device_info }) => {
                     <button
                         type="button"
                         onClick={() => set_customize("loan_customization")}
-                        className={`w-full active:opacity-60 py-[9px] rounded-e-md text-[12px] md:text-[15px] transition-all font-semibold ${customize === "loan_customization" ? "bg-emerald-500 hover:bg-emerald-400 text-white" : "bg-stone-400 hover:bg-stone-500 text-white"}`}
+                        className={`w-full active:opacity-60 py-[9px] text-[12px] md:text-[15px] transition-all font-semibold ${customize === "loan_customization" ? "bg-emerald-500 hover:bg-emerald-400 text-white" : "bg-stone-400 hover:bg-stone-500 text-white"}`}
                     >
                         Loan Settings
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => set_customize("repayment_customization")}
+                        className={`w-full active:opacity-60 py-[9px] border-l border-gray-300 rounded-e-md text-[12px] md:text-[15px] transition-all font-semibold ${customize === "repayment_customization" ? "bg-emerald-500 hover:bg-emerald-400 text-white" : "bg-stone-400 hover:bg-stone-500 text-white"}`}
+                    >
+                        Repayment-L
                     </button>
                 </div>
 
@@ -198,73 +239,117 @@ const Admin = ({ app_settings, device_info }) => {
                             />
                         </div>
                     </>
-                    :
-                    <>
 
-                        <div className='w-full flex flex-col gap-1' >
-                            <label className='text-[13px] font-bold text-stone-700' htmlFor="">Select Loan</label>
-                            < select
-                                className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full cursor-pointer'
-                                onChange={(e) => { set_loan_id(e.target.value) }}
-                            >
-                                {Boolean(all_myloans.length) &&
-                                    all_myloans.map((each, index) => (
-                                        <option key={index} value={each._id}> {`My-Loan ${index + 1}`}</option>
+                    : customize === "loan_customization" ?
 
-                                    ))
-                                }
+                        <>
 
-                            </select>
-                        </div>
+                            <div className='w-full flex flex-col gap-1' >
+                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">Select Loan</label>
+                                < select
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full cursor-pointer'
+                                    onChange={(e) => { set_loan_id(e.target.value) }}
+                                    value={all_myloans.length && !loan_id ? all_myloans[0]._id : loan_id}
+                                >
+                                    {Boolean(all_myloans.length) &&
+                                        all_myloans.map((each, index) => (
+                                            <option key={index} value={each._id}> {each.loan_name}</option>
 
-                        <div className='w-full flex flex-col gap-1'>
-                            <label className='text-[13px] font-bold text-stone-700' htmlFor="">Loan Amount</label>
-                            < input
-                                placeholder='00.00'
-                                type="text"
-                                className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
-                                name="loan_amount"
-                                value={values_2.loan_amount}
-                                onChange={handle_change_2}
-                            />
-                        </div>
+                                        ))
+                                    }
 
-                        <div className='w-full flex flex-col gap-1'>
-                            <label className='text-[13px] font-bold text-stone-700' htmlFor="">Lenders</label>
-                            < input
-                                placeholder='Lenders'
-                                type="text"
-                                className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
-                                name="lenders"
-                                value={values_2.lenders}
-                                onChange={handle_change_2}
-                            />
-                        </div>
+                                </select>
+                            </div>
 
-                        <div className='w-full flex flex-col gap-1'>
-                            <label className='text-[13px] font-bold text-stone-700' htmlFor="">Repayment Time</label>
-                            < input
-                                placeholder='DD-MM-YYYY'
-                                type="text"
-                                className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
-                                name="repayment_time"
-                                value={values_2.repayment_time}
-                                onChange={handle_change_2}
-                            />
-                        </div>
+                            <div className='w-full flex flex-col gap-1'>
+                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">Loan Amount</label>
+                                < input
+                                    placeholder='00.00'
+                                    type="text"
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
+                                    name="loan_amount"
+                                    value={values_2.loan_amount}
+                                    onChange={handle_change_2}
+                                />
+                            </div>
 
-                        <div className='w-full flex flex-col gap-1'>
-                            <label className='text-[13px] font-bold text-stone-700' htmlFor="">Code</label>
-                            < input
-                                placeholder='******'
-                                type="text"
-                                className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
-                                name="code"
-                                value={values_2.code}
-                                onChange={handle_change_2}
-                            />
-                        </div>
-                    </>
+                            <div className='w-full flex flex-col gap-1'>
+                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">Lenders</label>
+                                < input
+                                    placeholder='Lenders'
+                                    type="text"
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
+                                    name="lenders"
+                                    value={values_2.lenders}
+                                    onChange={handle_change_2}
+                                />
+                            </div>
+
+                            <div className='w-full flex flex-col gap-1'>
+                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">Repayment Time</label>
+                                < input
+                                    placeholder='DD-MM-YYYY'
+                                    type="text"
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
+                                    name="repayment_time"
+                                    value={values_2.repayment_time}
+                                    onChange={handle_change_2}
+                                />
+                            </div>
+
+                            <div className='w-full flex flex-col gap-1'>
+                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">Code</label>
+                                < input
+                                    placeholder='******'
+                                    type="text"
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
+                                    name="code"
+                                    value={values_2.code}
+                                    onChange={handle_change_2}
+                                />
+                            </div>
+                        </>
+
+                        :
+                        <>
+
+                            <div className='w-full flex flex-col gap-1' >
+                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">
+                                    Select loan for repayment-link
+                                </label>
+                                < select
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full cursor-pointer'
+                                    onChange={(e) => { set_loan_id_2(e.target.value) }}
+                                    value={(repayment_link_data || loan_id_2) ?
+                                        (repayment_link_data && !loan_id_2 ? repayment_link_data._id : loan_id_2) : ""
+                                    }
+                                >
+                                    <option disabled value="" >Select a loan</option>
+                                    {Boolean(all_myloans.length) &&
+
+                                        all_myloans.map((each, index) => (
+                                            <option key={index} value={each._id}> {each.loan_name}</option>
+
+                                        ))
+                                    }
+
+                                </select>
+                            </div>
+
+
+                            <div className='w-full flex flex-col gap-1'>
+                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">Code</label>
+                                < input
+                                    placeholder='******'
+                                    type="text"
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
+                                    name="code"
+                                    value={values_3.code}
+                                    onChange={handle_change_3}
+                                />
+                            </div>
+                        </>
+
                 }
 
 
@@ -273,40 +358,44 @@ const Admin = ({ app_settings, device_info }) => {
                     <div className='w-full mt-4'>
                         <button type='button' onClick={() => handle_update("app", values)} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Update</button>
                     </div>
-                    :
-                    <>
-                        <div className='w-full flex justify-center gap-10'>
+                    : customize === "loan_customization" ?
+                        <>
+                            <div className='w-full flex justify-center gap-10'>
 
-                            <div className='w-full flex justify-center gap-4' >
-
-                                <div className='w-full mt-4'>
-                                    <button type='button' onClick={() => { handle_update("loan", values_2) }} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Update</button>
-                                </div>
-
-                                {Boolean(all_myloans.length > 1) &&
+                                <div className='w-full flex justify-center gap-4' >
 
                                     <div className='w-full mt-4'>
-                                        <button
-                                            type='button'
-                                            onClick={() => {
-                                                openModal("delete_loan_modal");
-                                                !loan_id && set_loan_id(all_myloans[0]._id);
-                                            }}
-                                            className='bg-red-500 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full'
-                                        >
-                                            Delete
-                                        </button>
+                                        <button type='button' onClick={() => { handle_update("loan", values_2) }} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Update</button>
                                     </div>
-                                }
+
+                                    {Boolean(all_myloans.length > 1) &&
+
+                                        <div className='w-full mt-4'>
+                                            <button
+                                                type='button'
+                                                onClick={() => {
+                                                    openModal("delete_loan_modal");
+                                                    !loan_id && set_loan_id(all_myloans[0]._id);
+                                                }}
+                                                className='bg-red-500 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full'
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    }
+
+                                </div>
+
+                                <div className='w-full mt-4'>
+                                    <button type='button' onClick={() => openModal("add_loan_modal")} className='bg-blue-500 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Add New Loan</button>
+                                </div>
 
                             </div>
-
-                            <div className='w-full mt-4'>
-                                <button type='button' onClick={() => openModal("add_loan_modal")} className='bg-blue-500 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Add New Loan</button>
-                            </div>
-
+                        </>
+                        :
+                        <div className='w-full mt-4'>
+                            <button type='button' onClick={() => handle_update("repayment", values_3)} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Update</button>
                         </div>
-                    </>
                 }
 
             </form>

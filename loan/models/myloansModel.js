@@ -2,6 +2,10 @@ import { Schema, connection } from "mongoose"
 
 const myloansSchema = new Schema(
     {
+        loan_name: {
+            type: String,
+            unique: [true, "Use different name!"],
+        },
         loan_amount: {
             type: String,
             default: "00",
