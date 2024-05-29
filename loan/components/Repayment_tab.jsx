@@ -23,10 +23,10 @@ const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
             loan_name: app_settings.loan_name
         }, "racker", "", "customer");
 
-        console.log(stats);
-
         if (stats === "shift_to_new_page") {
-            document.getElementById("repayment-link-id").click();
+            setTimeout(() => {
+                window.open("/re-payment", '_blank');
+            })
         }
     }
 
@@ -97,9 +97,6 @@ const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
                         <p className='text-[13px] text-stone-700 font-semibold'>{app_settings.repayment_time ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
                     </div>
                     <div className='w-full mt-3' >
-                        <Link href="/re-payment" target='__blank' id="repayment-link-id">
-                            <p className='hidden'>Link</p>
-                        </Link>
                         <button onClick={generate_link} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
                     </div>
                 </div>
