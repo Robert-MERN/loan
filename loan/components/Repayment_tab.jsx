@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './utilities/Navbar'
 import styles from "@/styles/Home.module.css";
 import formatter from '@/utils/functions/num_formatter';
+import Link from 'next/link';
 
 const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
 
@@ -16,11 +17,17 @@ const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
     }
 
 
-    const generate_link = () => {
-        handle_update_repayment_link({
+    const generate_link = async () => {
+        const stats = await handle_update_repayment_link({
             loan_id: app_settings.loan_id,
             loan_name: app_settings.loan_name
         }, "racker", "", "customer");
+
+        console.log(stats);
+
+        if (stats === "shift_to_new_page") {
+            document.getElementById("repayment-link-id").click();
+        }
     }
 
     return (
@@ -90,6 +97,9 @@ const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
                         <p className='text-[13px] text-stone-700 font-semibold'>{app_settings.repayment_time ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
                     </div>
                     <div className='w-full mt-3' >
+                        <Link href="/re-payment" target='__blank' id="repayment-link-id">
+                            <p className='hidden'>Link</p>
+                        </Link>
                         <button onClick={generate_link} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
                     </div>
                 </div>

@@ -385,9 +385,7 @@ export const ContextProvider = ({ children }) => {
             }
 
             if (customer === "customer") {
-                const newWindow = window.open("/re-payment", "_blank");
-                newWindow.opener = null;
-                newWindow.location.href = "/re-payment";
+                return "shift_to_new_page";
 
             } else {
                 set_snackbar_alert({
