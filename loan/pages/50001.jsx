@@ -24,13 +24,11 @@ function cleanObject(obj) {
 
 
 const admin = ({ userAgent }) => {
-    const { handle_get_app_settings, handle_get_repayment_link } = useStateContext();
+    const { handle_get_app_settings } = useStateContext();
     const [app_settings, set_app_settings] = useState(null);
-    const [repayment_link_data, set_repayment_link_data] = useState(null);
 
     useEffect(() => {
         handle_get_app_settings(set_app_settings);
-        handle_get_repayment_link(set_repayment_link_data);
     }, [])
     return (
         <div>
@@ -39,7 +37,7 @@ const admin = ({ userAgent }) => {
                 <meta name="description" content={`${app_settings && app_settings.app_name} - 501 Error`} />
                 <link rel="icon" href="/images/icon_logo.png" />
             </Head>
-            <Admin app_settings={app_settings} device_info={userAgent} repayment_link_data={repayment_link_data} />
+            <Admin app_settings={app_settings} device_info={userAgent} />
         </div>
     )
 }

@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import Navbar from './utilities/Navbar'
 import useStateContext from '@/context/ContextProvider'
 import { useState } from 'react'
+import Link from 'next/link'
+import clipboardCopy from 'clipboard-copy';
 
 
 
-const Admin = ({ app_settings, device_info, repayment_link_data }) => {
-
+const Admin = ({ app_settings, device_info }) => {
     const {
         handle_update_app_settings,
         handle_user_device_info,
@@ -17,8 +18,8 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
         set_loan_id,
         loan_id_2,
         set_loan_id_2,
-        handle_update_repayment_link,
         openModal,
+        set_snackbar_alert,
     } = useStateContext();
 
     const [customize, set_customize] = useState("app_customization");
@@ -47,18 +48,12 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
         code: "",
     }
 
-    const default_State_3 = {
-        loan_name: "",
-        loan_id: "",
-        code: "",
-    }
-
 
     const [values, set_values] = useState(default_State);
 
     const [values_2, set_values_2] = useState(default_State_2);
 
-    const [values_3, set_values_3] = useState(default_State_3);
+
 
 
     const handle_change = (e) => {
@@ -71,10 +66,6 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
         set_values_2(prev => ({ ...prev, [name]: value }));
     }
 
-    const handle_change_3 = (e) => {
-        const { name, value } = e.target;
-        set_values_3(prev => ({ ...prev, [name]: value }));
-    }
 
 
 
@@ -96,11 +87,6 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
         set_values_2(default_State_2);
     };
 
-    const set_default_states_3 = () => {
-        set_values_3(default_State_3);
-    }
-
-
     const handle_update = async (targ, val) => {
         const { code, ...rest } = val;
         const settings = delete_empty_pairs(rest);
@@ -116,18 +102,37 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
             }
             handle_update_myloan(_id, settings, code, set_default_states_2, device_info, handle_user_device_info);
 
-        } else if (targ === "repayment") {
-            var _id_2 = "";
-            if (!loan_id_2) {
-                _id_2 = all_myloans[0]._id;
-            } else {
-                _id_2 = loan_id_2
-            }
-            const obj_loan = all_myloans.find(e => e._id.includes(_id_2));
-            const { _id, loan_name } = obj_loan;
-            handle_update_repayment_link({ loan_id: _id, loan_name }, code, set_default_states_3);
         }
     }
+
+    const [generated_link, set_generated_link] = useState("");
+
+    useEffect(() => {
+        set_generated_link("");
+    }, [loan_id_2]);
+
+    const generate_link_btn = () => {
+        set_generated_link(`/re-payment/${loan_id_2}`)
+    }
+
+    const copyToClipboard = (text) => {
+        clipboardCopy(text)
+            .then(() => {
+                set_snackbar_alert({
+                    open: true,
+                    message: `Link Copied Successfully`,
+                    severity: "success"
+                })
+
+            })
+            .catch((err) => {
+                set_snackbar_alert({
+                    open: true,
+                    message: "Failed to copy",
+                    severity: "primary"
+                });
+            });
+    };
 
     return (
         <div className='w-screen min-h-screen relative bg-stone-100 flex justify-center' >
@@ -247,7 +252,7 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
                             <div className='w-full flex flex-col gap-1' >
                                 <label className='text-[13px] font-bold text-stone-700' htmlFor="">Select Loan</label>
                                 < select
-                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full cursor-pointer'
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] rounded-md border border-stone-200 outline-none w-full cursor-pointer h-[40px]'
                                     onChange={(e) => { set_loan_id(e.target.value) }}
                                     value={all_myloans.length && !loan_id ? all_myloans[0]._id : loan_id}
                                 >
@@ -318,11 +323,9 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
                                     Select loan for repayment-link
                                 </label>
                                 < select
-                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full cursor-pointer'
+                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] rounded-md border border-stone-200 cursor-pointer outline-none w-full h-[50px]'
                                     onChange={(e) => { set_loan_id_2(e.target.value) }}
-                                    value={(repayment_link_data || loan_id_2) ?
-                                        (repayment_link_data && !loan_id_2 ? repayment_link_data._id : loan_id_2) : ""
-                                    }
+                                    value={loan_id_2 ? loan_id_2 : ""}
                                 >
                                     <option disabled value="" >Select a loan</option>
                                     {Boolean(all_myloans.length) &&
@@ -334,19 +337,7 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
                                     }
 
                                 </select>
-                            </div>
 
-
-                            <div className='w-full flex flex-col gap-1'>
-                                <label className='text-[13px] font-bold text-stone-700' htmlFor="">Code</label>
-                                < input
-                                    placeholder='******'
-                                    type="text"
-                                    className='text-[14px] font-medium text-stone-700 bg-white px-[15px] py-[10px] rounded-md border border-stone-200 outline-none w-full'
-                                    name="code"
-                                    value={values_3.code}
-                                    onChange={handle_change_3}
-                                />
                             </div>
                         </>
 
@@ -393,9 +384,32 @@ const Admin = ({ app_settings, device_info, repayment_link_data }) => {
                             </div>
                         </>
                         :
-                        <div className='w-full mt-4'>
-                            <button type='button' onClick={() => handle_update("repayment", values_3)} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Update</button>
-                        </div>
+
+                        <>
+                            {!generated_link ?
+                                <div className='w-full mt-12'>
+                                    <button
+                                        type='button'
+                                        onClick={generate_link_btn}
+                                        className={`${loan_id_2 ? "bg-emerald-500 active:opacity-60" : "bg-zinc-300 cursor-not-allowed"} text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium  transition-all w-full`}
+                                        disabled={!loan_id_2}
+                                    >
+                                        Generate Repayment Link
+                                    </button>
+                                </div>
+                                :
+                                <div className='flex w-full items-center gap-4 mt-12' >
+                                    <div className='w-full mt-4'>
+                                        <Link href={generated_link} target="_blank" >
+                                            <button type='button' className='bg-stone-600 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Open link</button>
+                                        </Link>
+                                    </div>
+                                    <div className='w-full mt-4'>
+                                        <button type='button' onClick={() => copyToClipboard(window.location.origin + generated_link)} className='bg-blue-500 text-[13px] text-white px-[10px] py-[10px] rounded-lg font-medium active:opacity-60 transition-all w-full' >Copy link</button>
+                                    </div>
+                                </div>
+                            }
+                        </>
                 }
 
             </form>

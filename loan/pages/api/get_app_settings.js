@@ -20,8 +20,10 @@ export default async function handler(req, res) {
             return res.status(404).json({ status: false, message: "Setting was not found" });
         }
 
+        const settingObj = setting.toObject()
+        const { _id, createdAt, updatedAt, ...rest } = settingObj;
 
-        return res.status(200).json(setting);
+        return res.status(200).json(rest);
 
     } catch (err) {
         const net_err_msg = "querySrv ENODATA _mongodb._tcp.application.bjwgp.mongodb.net"

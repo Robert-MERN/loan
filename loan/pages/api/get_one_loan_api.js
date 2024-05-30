@@ -1,5 +1,4 @@
 import connectMongo from "@/utils/functions/connectMongo"
-import Repayments from "@/models/repaymentModal";
 import Myloans from "@/models/myloansModel";
 
 /**
@@ -9,25 +8,18 @@ import Myloans from "@/models/myloansModel";
  */
 
 
-
 export default async function handler(req, res) {
     try {
+        const { id } = req.query;
 
         await connectMongo();
 
-        const repayment = await Repayments.findOne();
+        const myloan = await Myloans.findById(id);
 
-        if (!repayment) {
-            return res.status(200).json(null);
-        }
-
-        const myloan = await Myloans.findById(repayment.loan_id);
         if (!myloan) {
-            return res.status(200).json(null);
+            return res.status(404).json({ status: false, message: "Loan not found. Reload the page!" });
         }
-
         return res.status(200).json(myloan);
-
 
     } catch (err) {
         const net_err_msg = "querySrv ENODATA _mongodb._tcp.application.bjwgp.mongodb.net"
@@ -48,4 +40,3 @@ export default async function handler(req, res) {
         }
     }
 }
-

@@ -4,7 +4,7 @@ import styles from "@/styles/Home.module.css";
 import formatter from '@/utils/functions/num_formatter';
 import Link from 'next/link';
 
-const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
+const Repayment_tab = ({ app_settings }) => {
 
 
     const calc_admin_amount = (amount) => {
@@ -16,19 +16,6 @@ const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
         return admin_amount;
     }
 
-
-    const generate_link = async () => {
-        const stats = await handle_update_repayment_link({
-            loan_id: app_settings.loan_id,
-            loan_name: app_settings.loan_name
-        }, "racker", "", "customer");
-
-        if (stats === "shift_to_new_page") {
-            setTimeout(() => {
-                window.open("/re-payment", '_blank');
-            })
-        }
-    }
 
     return (
         <div className='w-screen min-h-screen relative bg-stone-100' >
@@ -96,9 +83,11 @@ const Repayment_tab = ({ app_settings, handle_update_repayment_link }) => {
                         <p className='text-[13px] text-stone-400 font-semibold' >Expire Date</p>
                         <p className='text-[13px] text-stone-700 font-semibold'>{app_settings.repayment_time ? app_settings.repayment_time : "yyyy-mm-dd"}</p>
                     </div>
-                    <div className='w-full mt-3' >
-                        <button onClick={generate_link} className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
-                    </div>
+                    <Link href={`/re-payment/${app_settings._id}`} target="_blank" >
+                        <div className='w-full mt-3' >
+                            <button className='bg-emerald-400 text-[13px] text-white px-[10px] py-[10px] rounded-md font-medium active:opacity-60 transition-all w-full' >Pay Loan</button>
+                        </div>
+                    </Link>
                 </div>
             </div>
         </div >

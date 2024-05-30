@@ -10,12 +10,9 @@ import formatter from '@/utils/functions/num_formatter';
 
 
 const Loans = ({ loan_settings }) => {
-
-    const { set_selected_loan } = useStateContext();
     const router = useRouter();
-    const repayment_btn = (loan) => {
-        set_selected_loan(loan);
-        router.push("/re-payment-tab");
+    const repayment_btn = (id) => {
+        router.push(`/re-payment-tab/${id}`);
     }
 
     return (
@@ -39,7 +36,7 @@ const Loans = ({ loan_settings }) => {
                 <p className='text-[13px] text-stone-700 font-semibold'>{loan_settings ? loan_settings.repayment_time : "yyyy-mm-dd"}</p>
             </div>
             <div className='w-full flex justify-end items-center mt-3' >
-                <button onClick={() => repayment_btn(loan_settings)} className='bg-emerald-400 text-[12px] text-white px-[10px] py-[8px] rounded-lg font-medium active:opacity-60 transition-all' >Repayment Now</button>
+                <button onClick={() => repayment_btn(loan_settings._id)} className='bg-emerald-400 text-[12px] text-white px-[10px] py-[8px] rounded-lg font-medium active:opacity-60 transition-all' >Repayment Now</button>
             </div>
 
         </div>

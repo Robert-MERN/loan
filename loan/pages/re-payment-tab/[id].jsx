@@ -4,22 +4,22 @@ import Repayment_tab from "@/components/Repayment_tab";
 import { useEffect, useState } from 'react';
 import useStateContext from '@/context/ContextProvider';
 import { getCookie } from 'cookies-next';
-
+import { useRouter } from 'next/router';
 
 
 export default function repayment_tab() {
 
-    const { handle_get_app_settings, selected_loan, handle_update_repayment_link } = useStateContext();
+    const { handle_get_app_settings, handle_get_one_myloan } = useStateContext();
+
+    const router = useRouter();
     const [app_settings, set_app_settings] = useState(null);
     const [loan, set_loan] = useState({});
 
+
+
     useEffect(() => {
         handle_get_app_settings(set_app_settings);
-        if (selected_loan) {
-            const { _id, ...rest } = selected_loan
-            set_loan({ loan_id: _id, ...rest });
-        }
-
+        handle_get_one_myloan(router.query.id, set_loan)
     }, [])
 
 
@@ -33,7 +33,6 @@ export default function repayment_tab() {
             </Head>
             <Repayment_tab
                 app_settings={{ ...app_settings, ...loan }}
-                handle_update_repayment_link={handle_update_repayment_link}
             />
         </div>
     )

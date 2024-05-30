@@ -3,6 +3,7 @@ import styles from '@/styles/Home.module.css'
 import Repayment from "@/components/Repayment";
 import { useEffect, useState } from 'react';
 import useStateContext from '@/context/ContextProvider';
+import { useRouter } from 'next/router';
 
 
 
@@ -11,14 +12,26 @@ import useStateContext from '@/context/ContextProvider';
 
 const repayment = () => {
 
-    const { handle_get_app_settings, handle_get_repayment_link } = useStateContext();
+    const router = useRouter();
+
+    const { id } = router.query;
+
+    const { handle_get_app_settings, handle_get_one_myloan } = useStateContext();
+
+
     const [app_settings, set_app_settings] = useState(null);
+
+
     const [repayment_link_data, set_repayment_link_data] = useState({});
 
     useEffect(() => {
         handle_get_app_settings(set_app_settings);
-        handle_get_repayment_link(set_repayment_link_data);
-    }, []);
+        if (id) {
+            handle_get_one_myloan(id, set_repayment_link_data);
+        }
+    }, [id]);
+
+
 
 
     return (

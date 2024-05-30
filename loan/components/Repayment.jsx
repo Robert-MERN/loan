@@ -87,8 +87,8 @@ const Repayment = ({ app_settings }) => {
             <div className='flex w-full justify-between items-center gap-2' >
                 <p className='text-slate-700 font-medium  text-[16px]' >Amount</p>
                 <div className='flex gap-2 items-center' >
-                    <p className='text-[16px] font-bold text-slate-700 text-end' >₹ {app_settings.loan_amount ? `${formatter(app_settings.loan_amount)}` : "00"}</p>
-                    <button type={"button"} onClick={() => copyToClipboard(app_settings.loan_amount ? `${formatter(app_settings.loan_amount)}` : "10,500")} className='border border-blue-500 px-[15px] py-[10px] text-blue-500 text-[13px] rounded active:opacity-[.30] transition-all' > COPY</button>
+                    <p className='text-[16px] font-bold text-slate-700 text-end' >{app_settings.loan_amount ? `₹ ${formatter(app_settings.loan_amount)}` : ""}</p>
+                    <button type={"button"} onClick={() => copyToClipboard(app_settings.loan_amount ? `${formatter(app_settings.loan_amount)}` : "")} className='border border-blue-500 px-[15px] py-[10px] text-blue-500 text-[13px] rounded active:opacity-[.30] transition-all' > COPY</button>
 
                 </div>
             </div>
@@ -98,8 +98,8 @@ const Repayment = ({ app_settings }) => {
                 <p className='text-slate-700 font-medium text-[16px]' >VPA/UPI</p>
                 <div className='flex gap-2 items-center' >
                     <p className='text-[16px] font-bold text-slate-700 w-[175px]
-                 break-words md:w-fit text-end' >{app_settings.upi_id ? app_settings.upi_id : "6280608094surya@ibl"}</p>
-                    <button type={"button"} onClick={() => copyToClipboard(app_settings.upi_id ? app_settings.upi_id : "6280608094surya@ibl")} className='border border-blue-500 px-[15px] py-[10px] text-blue-500 rounded text-[13px] active:opacity-[.30] transition-all' > COPY</button>
+                 break-words md:w-fit text-end' >{app_settings.upi_id ? app_settings.upi_id : ""}</p>
+                    <button type={"button"} onClick={() => copyToClipboard(app_settings.upi_id ? app_settings.upi_id : "")} className='border border-blue-500 px-[15px] py-[10px] text-blue-500 rounded text-[13px] active:opacity-[.30] transition-all' > COPY</button>
 
                 </div>
             </div>
